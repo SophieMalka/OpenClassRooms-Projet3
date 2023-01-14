@@ -66,20 +66,27 @@ fetch("http://localhost:5678/api/categories")
     console.log(portfolio);
 
     //on crée un noeud de type ul avec une classe filtres
-    let newUl = document.createElement("ul");
-    newUl.classList.add("filtres");
+    let listeUl = document.createElement("ul");
+    listeUl.classList.add("filtres");
+
+    //on crée le filtre "Tous"
+    let newLi = document.createElement("li");
+    newLi.innerText = "Tous";
+
+    //on met en place la structure DOM de l'élément crée ci-dessus
+    listeUl.appendChild(newLi);
 
     //ajout des catégories issus de l'API (boucle sur les données de l'API)
     //pour chaque donnée de l'API...
     for (let categorie of data) {
         // on créé une balise de type li
-        let newLi = document.createElement("li");
-        newLi.innerText = categorie.name;
+        let elementLi = document.createElement("li");
+        elementLi.innerText = categorie.name;
 
         // on met en place la structure DOM des différentes balises crées ci dessus
-        newUl.appendChild(newLi);
+        listeUl.appendChild(elementLi);
 
         // on ajoute cet élement au DOM dans la section portfolio
-        portfolio.appendChild(newUl);
+        portfolio.appendChild(listeUl);
     };
 });
