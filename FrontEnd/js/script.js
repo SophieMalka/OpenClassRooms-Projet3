@@ -72,6 +72,7 @@ fetch("http://localhost:5678/api/categories")
     //on crée le filtre "Tous"
     let buttonTous = document.createElement("button");
     buttonTous.innerText = "Tous";
+    buttonTous.setAttribute('id', '0');
 
     //on met en place la structure DOM de l'élément crée ci-dessus
     divFiltres.appendChild(buttonTous);
@@ -82,11 +83,15 @@ fetch("http://localhost:5678/api/categories")
         // on créé une balise de type li
         let newButton = document.createElement("button");
         newButton.innerText = categorie.name;
+        newButton.setAttribute('id', categorie.id);
+        
 
         // on met en place la structure DOM des différentes balises crées ci dessus
         divFiltres.appendChild(newButton);
     };
 
+    const gallery = document.getElementsByClassName("gallery").item(0);
+
     // on ajoute cet élement au DOM dans la section portfolio
-    portfolio.appendChild(divFiltres);
+    portfolio.insertBefore(divFiltres, gallery);
 });
