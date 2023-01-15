@@ -126,24 +126,26 @@ li:hover {
 	margin-bottom: 1em;
 }
 
-#portfolio ul {
+.filtres {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	column-gap: 10px;
 }
 
-#portfolio ul li {
+.filtres button {
 	font-size: 16px;
+	font-weight: 700;
 	line-height: 19px;
 	color: #1D6154;
 	border: 1px solid #1D6154;
+	background-color: #FFFFFF;
 	border-radius: 60px;
 	width: fit-content;
 	padding: 8px 20px;
 }
 
-#portfolio ul li:hover {
+.filtres button:hover {
 	text-decoration: none;
 	color: #FFFFFF;
 	background-color: #1D6154;
