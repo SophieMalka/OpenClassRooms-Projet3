@@ -1,52 +1,67 @@
-// récupération des projets sur l'API
-fetch("http://localhost:5678/api/works")
+/**
+ * Fonction afficher les projets
+ */
+function displayWorks(catId) {
+
+        // récupération des projets sur l'API
+    fetch("http://localhost:5678/api/works")
     .then(function(response) {
         console.log(response);
         if(response.ok) {
             return response.json();
     }
-})
+    })
 
-.then(function(data) {
+    .then(function(data) {
     // une fois qu'on a les données de l'API
     console.log(data);
 
-    //récupération de l'élément avec la classe CSS gallery (Objet HTMLcollection)
+    //suppression des projets
+    deleteWorks("api");
+
     const gallery = document.getElementsByClassName("gallery").item(0);
     console.log(gallery);
-
-    //suppression de tous les enfants de cet élément (boucle WHILE)
-    //alert("Purge !");
-    while (gallery.hasChildNodes()) {
-        gallery.removeChild(gallery.firstChild);
-    }
 
     //ajout des works issus de l'API (boucle sur les données de l'API)
     //alert("Alimentation !");
     //pour chaque donnée de l'API...
-    for (let work of data) {
+    setWorks(data, catId);
+    });
+}
+
+function setWorks (data, catId) {
+    console.log(catId);
+
+    let fiteredData = data;
+  if (catId !== 0) {
+    fiteredData = data.filter((elt) => elt["categoryId"] == catId);
+  } 
+
+    for (let work of fiteredData) {
+
         //... on crée un noeud de type figure
         let newFigure = document.createElement("figure");
-        
-        // on créé une balise de type img
-        let newImg = document.createElement("img");
-        newImg.setAttribute("crossorigin", "anonymous");
-        newImg.setAttribute("src", work.imageUrl);
-        newImg.alt = work.title;
+            
+            // on créé une balise de type img
+            let newImg = document.createElement("img");
+            newImg.setAttribute("crossorigin", "anonymous");
+            newImg.setAttribute("src", work.imageUrl);
+            newImg.alt = work.title;
 
-        // on crée une balise de type figcaption
-        let newCaption = document.createElement("figcaption");
-        newCaption.innerText = work.title;
+            // on crée une balise de type figcaption
+            let newCaption = document.createElement("figcaption");
+            newCaption.innerText = work.title;
 
-        // on met en place la structure DOM des différentes balises crées ci dessus
-        newFigure.appendChild(newImg);
-        newFigure.appendChild(newCaption);
+            // on met en place la structure DOM des différentes balises crées ci dessus
+            newFigure.appendChild(newImg);
+            newFigure.appendChild(newCaption);
+
+        const gallery = document.getElementsByClassName("gallery").item(0);
 
         // on ajoute cet élement au DOM dans la DIV gallery
         gallery.appendChild(newFigure);
     }
-});
-
+};
 
 // récupération des catégories sur l'API
 fetch("http://localhost:5678/api/categories")
@@ -73,6 +88,7 @@ fetch("http://localhost:5678/api/categories")
     let buttonTous = document.createElement("button");
     buttonTous.innerText = "Tous";
     buttonTous.setAttribute('id', 'btn-filtre-0');
+    buttonTous.value = 0;
 
     //on met en place la structure DOM de l'élément crée ci-dessus
     divFiltres.appendChild(buttonTous);
@@ -84,6 +100,14 @@ fetch("http://localhost:5678/api/categories")
         let newButton = document.createElement("button");
         newButton.innerText = categorie.name;
         newButton.setAttribute('id', 'btn-filtre-' + categorie.id);
+        newButton.value = categorie.id;
+        newButton.addEventListener("click", function(event){
+            console.log(event);
+            console.log(event.target);
+            console.log(event.target.id);
+            deleteWorks("click");
+            displayWorks(event.target.value);
+        });
         
         // on met en place la structure DOM des différentes balises crées ci dessus
         divFiltres.appendChild(newButton);
@@ -117,7 +141,23 @@ fetch("http://localhost:5678/api/categories")
             let workId = work.categoryId;
             console.log(workId);
         };
-
     });
 });
 
+/**
+ * 
+ * @param {String} param okok
+ */
+function deleteWorks (param) {
+    console.log(param);
+    //récupération de l'élément avec la classe CSS gallery (Objet HTMLcollection)
+ const gallery = document.getElementsByClassName("gallery").item(0);
+ console.log(gallery);
+
+ //suppression de tous les enfants de cet élément (boucle WHILE)
+ //alert("Purge !");
+ while (gallery.hasChildNodes()) {
+     gallery.removeChild(gallery.firstChild);
+ }
+};
+ 
