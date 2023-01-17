@@ -85,14 +85,39 @@ fetch("http://localhost:5678/api/categories")
         newButton.innerText = categorie.name;
         newButton.setAttribute('id', 'btn-filtre-' + categorie.id);
         
-
         // on met en place la structure DOM des différentes balises crées ci dessus
         divFiltres.appendChild(newButton);
     };
 
+    // récupération de l'élément avec la class CSS gallery
     const gallery = document.getElementsByClassName("gallery").item(0);
 
     // on ajoute cet élement au DOM dans la section portfolio
     portfolio.insertBefore(divFiltres, gallery);
+
+    // Création de la fonction filtrer sur les boutons
+
+    // On récupère les données work de l'API
+    // récupération des projets sur l'API
+    fetch("http://localhost:5678/api/works")
+    .then(function(response) {
+        console.log(response);
+        if(response.ok) {
+            return response.json();
+    }
+    })
+
+    .then(function(data) {
+        console.log(data);
+
+        const btnFilterObjet = document.getElementById("btn-filtre-1");
+        console.log(btnFilterObjet);
+
+        for (let work of data) {
+            let workId = work.categoryId;
+            console.log(workId);
+        };
+
+    });
 });
 
