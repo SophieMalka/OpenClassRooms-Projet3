@@ -121,36 +121,10 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
-#portfolio h2 {
+#portfolio h2,
+#login h2 {
 	text-align: center;
 	margin-bottom: 1em;
-}
-
-.filtres {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	column-gap: 10px;
-	margin-bottom: 50px;
-}
-
-.filtres button {
-	font-family: 'Syne';
-	font-size: 16px;
-	font-weight: 700;
-	line-height: 19px;
-	color: #1D6154;
-	border: 1px solid #1D6154;
-	background-color: #FFFFFF;
-	border-radius: 60px;
-	width: fit-content;
-	padding: 8px 20px;
-}
-
-.filtres button:hover {
-	text-decoration: none;
-	color: #FFFFFF;
-	background-color: #1D6154;
 }
 
 .gallery {
@@ -165,31 +139,36 @@ li:hover {
 	width: 100%;
 
 }
-#contact {
+#contact,
+#login {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
-#contact > * {
+#contact > *,
+#login > * {
 	text-align: center;
 
 }
 #contact h2{
 	margin-bottom: 20px;
 }
-#contact form {
+#contact form,
+#login form {
 	text-align: left;
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#contact input {
+#contact input,
+#login input {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label {
+#contact label,
+#login label {
 	margin: 2em 0 1em 0;
 }
 #contact textarea {
@@ -214,3 +193,16 @@ footer nav ul {
 	margin: 2em
 }
 
+#login {
+	margin: 116px auto;
+}
+
+#login a {
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 16px;
+	text-decoration-line: underline;
+	color: #3D3D3D;
+}
