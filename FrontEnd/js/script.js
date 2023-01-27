@@ -192,3 +192,28 @@ function displayButton() {
 };
 
 displayButton();
+
+// PASSAGE AU MODE EDITION
+
+/**
+ * Création de la fonction Log Out
+ */
+function logout() {
+    const log = document.querySelector('nav > ul > li > a');
+    console.log(log);
+
+    log.innerText = "Logout";
+
+    log.addEventListener("click", function () {
+        localStorage.clear();
+    });
+};
+
+// Vérification de la récupération du token
+localStorage.getItem("token");
+console.log(localStorage);
+
+// Si le token est récupéré
+if (localStorage.getItem("token")) {
+    logout();
+}
