@@ -32,8 +32,11 @@ async function onSubmit(event) {
     } else if (response.status === 404 || response.status === 401) {
         form.email.value = "";
         form.password.value = "";
-        alert("Les informations utilisateur et/ou mot de passe ne sont pas correctes.");
+        alert("Erreur dans l’identifiant ou le mot de passe");
     }
 };
 
 form.addEventListener("submit", onSubmit);
+
+const body = document.querySelector('body');
+body.style.height = '100%';

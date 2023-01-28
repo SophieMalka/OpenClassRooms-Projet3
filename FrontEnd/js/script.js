@@ -125,7 +125,7 @@ function displayButton() {
         buttonTous.style.lineHeight = '19px';
         buttonTous.style.color = '#1D6154';
         buttonTous.style.border = '1px solid #1D6154';
-        buttonTous.style.backgroundColor = '#FFFFFF';
+        buttonTous.style.backgroundColor = '#FFFEF8';
         buttonTous.style.borderRadius = '60px';
         buttonTous.style.width = 'fit-content';
         buttonTous.style.padding = '8px 20px';
@@ -136,7 +136,7 @@ function displayButton() {
         });
         buttonTous.addEventListener("mouseout", function(event){
             event.target.style.color = '#1D6154';
-            event.target.style.backgroundColor = '#FFFFFF';
+            event.target.style.backgroundColor = '#FFFEF8';
         });
 
         //on met en place la structure DOM de l'élément crée ci-dessus
@@ -164,7 +164,7 @@ function displayButton() {
             newButton.style.lineHeight = '19px';
             newButton.style.color = '#1D6154';
             newButton.style.border = '1px solid #1D6154';
-            newButton.style.backgroundColor = '#FFFFFF';
+            newButton.style.backgroundColor = '#FFFEF8';
             newButton.style.borderRadius = '60px';
             newButton.style.width = 'fit-content';
             newButton.style.padding = '8px 20px';
@@ -176,7 +176,7 @@ function displayButton() {
             });
             newButton.addEventListener("mouseout", function(event){
                 event.target.style.color = '#1D6154';
-                event.target.style.backgroundColor = '#FFFFFF';
+                event.target.style.backgroundColor = '#FFFEF8';
             });
 
             // on met en place la structure DOM des différentes balises crées ci dessus
@@ -202,18 +202,120 @@ function logout() {
     const log = document.querySelector('nav > ul > li > a');
     console.log(log);
 
-    log.innerText = "Logout";
+    log.innerText = "logout";
 
     log.addEventListener("click", function () {
         localStorage.clear();
     });
 };
 
-// Vérification de la récupération du token
-localStorage.getItem("token");
-console.log(localStorage);
+function displayEditMode() {
+    const body = document.querySelector('body');
+    console.log(body);
+    body.style.flexWrap = 'wrap';
+    body.style.marginTop = '0';
+    body.style.maxWidth = '100%';
 
-// Si le token est récupéré
-if (localStorage.getItem("token")) {
-    logout();
-}
+    let banniere = document.createElement('div');
+    banniere.style.backgroundColor = '#000000';
+    banniere.style.width = '100%';
+    banniere.style.margin = '0';
+    banniere.style.height = '59px';
+    banniere.style.marginBottom = '39px';
+    banniere.style.display = 'flex';
+    banniere.style.justifyContent = 'center';
+    banniere.style.alignItems = 'center';
+    banniere.style.columnGap = '21px';
+
+    body.prepend(banniere);
+
+    const header = document.querySelector('header');
+    header.style.maxWidth = '1140px';
+    header.style.margin = '50px auto';
+
+    const main = document.querySelector('main');
+    main.style.maxWidth= '1140px';
+    main.style.margin = 'auto';
+
+    let edit = document.createElement('p');
+    edit.innerHTML = '<i class="fas fa-regular fa-pen-to-square fa-lg"></i> Mode édition';
+    edit.style.color = '#FFFFFF';
+    edit.style.fontFamily = 'Work Sans';
+    edit.style.fontSize = '14px';
+
+    let publi = document.createElement('button');
+    publi.innerText = 'publier les changements';
+    publi.style.color = '#000000';
+    publi.style.backgroundColor = '#FFFFFF';
+    publi.style.borderRadius = '60px';
+    publi.style.padding = '11px 23px';
+    publi.style.fontFamily = 'Work Sans';
+    publi.style.fontSize = '14px'
+
+    banniere.append(edit);
+    banniere.appendChild(publi);
+};
+
+function displayModifButtonIntro() {
+    let modifier = document.createElement('a');
+    modifier.innerHTML = '<i class="fas fa-regular fa-pen-to-square fa-lg"></i> modifier';
+
+    const articleIntro = document.querySelector('#introduction > article');
+    console.log(articleIntro);
+
+    const titleIntro = document.querySelector('#introduction > article > h2');
+    titleIntro.style.marginTop = '1em';
+
+    articleIntro.prepend(modifier);
+};
+
+function displayModifButtonPhoto() {
+    let modifier = document.createElement('a');
+    modifier.innerHTML = '<i class="fas fa-regular fa-pen-to-square fa-lg"></i> modifier';
+    modifier.style.marginLeft = '56px';
+
+    const figureIntro = document.querySelector('#introduction > figure');
+
+    figureIntro.appendChild(modifier);
+
+    const imgIntro = document.querySelector('#introduction > figure > img');
+    imgIntro.style.marginBottom = '15px';
+};
+
+function displayModifButtonWorks() {
+    let divTitle = document.createElement('div');
+    divTitle.setAttribute('id', 'titlework');
+    divTitle.style.display = 'flex';
+    divTitle.style.justifyContent = 'center';
+    divTitle.style.alignItems = 'center';
+    divTitle.style.columnGap = '31px';
+
+    const portfolio = document.getElementById('portfolio');
+    portfolio.prepend(divTitle);
+
+    let modifier = document.createElement('a');
+    modifier.innerHTML = '<i class="fas fa-regular fa-pen-to-square fa-lg"></i> modifier';
+    modifier.style.marginBottom = '2em';
+
+    const title = document.querySelector('#portfolio > h2');
+
+    divTitle.append(title);
+    divTitle.appendChild(modifier);
+};
+
+function token() {
+    // Vérification de la récupération du token
+    localStorage.getItem("token");
+    console.log(localStorage);
+
+    // Si le token est récupéré
+    if (localStorage.getItem("token")) {
+        logout();
+        displayEditMode();
+        displayModifButtonIntro();
+        displayModifButtonPhoto();
+        displayModifButtonWorks();
+    };
+};
+
+token();
