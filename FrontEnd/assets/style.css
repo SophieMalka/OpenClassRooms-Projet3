@@ -241,15 +241,53 @@ footer nav ul {
 .modal-wrapper {
 	overflow: auto;
 	width: 630px;
-	max-width: calc(100vw - 20px);
-	max-height: calc(100vh - 20px);
-	padding: 20px;
+	max-width: calc(100vw - 100px);
+	max-height: calc(100vh - 100px);
+	padding-top: 32px;
+	padding-bottom: 60px;
 	background-color: #FFFFFF;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
 }
 
 .js-close-modal {
 	border: none;
 	background: none;
-	float: right;
+	padding-right: 36px;
 	font-size: 12px;
+	text-align: right;
+}
+
+#modal-gallery {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 46px 75px 38px 75px;
+	padding-bottom: 47px;
+	gap: 10px;
+	border-bottom: solid 1px #B3B3B3;
+}
+
+.js-add-works {
+	font-family: 'Syne';
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 19px;
+	color: #FFFFFF;
+	background-color: #1D6154;
+	border: 0px;
+	border-radius: 60px;
+	width: fit-content;
+	padding: 10px 49px;
+	margin: auto;
+}
+
+.js-delete-works {
+	font-family: 'Syne';
+	font-size: 14px;
+	line-height: 17px;
+	text-decoration: none;
+	color: #D65353;
+	text-align: center;
+	margin-top: 23px;
 }
