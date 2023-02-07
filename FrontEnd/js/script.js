@@ -85,6 +85,9 @@ function setWorks (data, catId) {
     } 
 };
 
+/**
+ * Afficher les boutons de filtre
+ */
 function displayButton() {
 // récupération des catégories sur l'API
     fetch("http://localhost:5678/api/categories")
@@ -209,6 +212,9 @@ function logout() {
     });
 };
 
+/**
+ * Afficher la bannière du mode édition
+ */
 function displayEditMode() {
     const body = document.querySelector('body');
     console.log(body);
@@ -256,6 +262,9 @@ function displayEditMode() {
     banniere.appendChild(publi);
 };
 
+/**
+ * Afficher le bouton modifier dans l'introduction
+ */
 function displayModifButtonIntro() {
     let modifier = document.createElement('a');
     modifier.innerHTML = '<i class="fas fa-regular fa-pen-to-square fa-lg"></i> modifier';
@@ -269,6 +278,9 @@ function displayModifButtonIntro() {
     articleIntro.prepend(modifier);
 };
 
+/**
+ * Afficher le bouton modifier pour la photo
+ */
 function displayModifButtonPhoto() {
     let modifier = document.createElement('a');
     modifier.innerHTML = '<i class="fas fa-regular fa-pen-to-square fa-lg"></i> modifier';
@@ -282,6 +294,9 @@ function displayModifButtonPhoto() {
     imgIntro.style.marginBottom = '15px';
 };
 
+/**
+ * Afficher le bouton modifier pour les projets
+ */
 function displayModifButtonWorks() {
     let divTitle = document.createElement('div');
     divTitle.setAttribute('id', 'titlework');
@@ -294,8 +309,12 @@ function displayModifButtonWorks() {
     portfolio.prepend(divTitle);
 
     let modifier = document.createElement('a');
+    modifier.classList.add("js-modal");
+    modifier.setAttribute("href", "#modal");
     modifier.innerHTML = '<i class="fas fa-regular fa-pen-to-square fa-lg"></i> modifier';
     modifier.style.marginBottom = '2em';
+    modifier.style.textDecoration = 'none';
+    modifier.style.color = '#000000';
 
     const title = document.querySelector('#portfolio > h2');
 
@@ -303,6 +322,9 @@ function displayModifButtonWorks() {
     divTitle.appendChild(modifier);
 };
 
+/**
+ * Affichage des diverses fonctions si on est correctement connecté
+ */
 function token() {
     // Vérification de la récupération du token
     localStorage.getItem("token");
@@ -319,3 +341,4 @@ function token() {
 };
 
 token();
+
