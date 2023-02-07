@@ -53,6 +53,7 @@ function setWorksModal(data) {
         let newFigure = document.createElement("figure");
         newFigure.style.width = '85px';
         newFigure.style.height = '128px';
+        newFigure.style.position = 'relative';
 
         let newImg = document.createElement("img");
         newImg.setAttribute("crossorigin", "anonymous");
@@ -61,9 +62,22 @@ function setWorksModal(data) {
         newImg.style.width = '100%';
         newImg.style.objectFit = 'cover';
 
+        let deleteIcon = document.createElement("i");
+        deleteIcon.classList.add("fa-solid", "fa-trash-can");
+        deleteIcon.style.position = 'absolute';
+        deleteIcon.style.color = '#FFFFFF';
+        deleteIcon.style.fontSize = '14px';
+        deleteIcon.style.backgroundColor = '#000000';
+        deleteIcon.style.padding = '4px';
+        deleteIcon.style.borderRadius = '2px';
+        deleteIcon.style.marginLeft = '55px';
+        deleteIcon.style.marginTop = '6px';
+
+
         let newCaption = document.createElement("figcaption");
         newCaption.innerText = 'éditer';
 
+        newFigure.appendChild(deleteIcon);
         newFigure.appendChild(newImg);
         newFigure.appendChild(newCaption);
 
