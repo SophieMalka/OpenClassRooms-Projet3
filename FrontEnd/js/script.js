@@ -250,6 +250,7 @@ function displayEditMode() {
     edit.style.fontSize = '14px';
 
     let publi = document.createElement('button');
+    publi.setAttribute('id', 'publier');
     publi.innerText = 'publier les changements';
     publi.style.color = '#000000';
     publi.style.backgroundColor = '#FFFFFF';
@@ -342,3 +343,95 @@ function token() {
 
 token();
 
+function displayWorksModal() {
+  fetch("http://localhost:5678/api/works")
+    .then(function (response) {
+      console.log(response);
+      if (response.ok) {
+        return response.json();
+      }
+    })
+
+    .then(function (data) {
+      // une fois qu'on a les données de l'API
+      console.log(data);
+
+      for (let work of data) {
+        let newFigure = document.createElement("figure");
+        newFigure.style.width = '85px';
+        newFigure.style.height = '128px';
+        newFigure.style.position = 'relative';
+
+        let newImg = document.createElement("img");
+        newImg.setAttribute("crossorigin", "anonymous");
+        newImg.setAttribute("src", work.imageUrl);
+        newImg.alt = work.title;
+        newImg.style.width = '100%';
+        newImg.style.objectFit = 'cover';
+
+        let deleteButton = document.createElement("button");
+        deleteButton.setAttribute("id", work.id);
+        deleteButton.classList.add('js-delete-button');
+        deleteButton.style.position = 'absolute';
+        deleteButton.style.backgroundColor = '#000000';
+        deleteButton.style.padding = '4px';
+        deleteButton.style.border = 'none';
+        deleteButton.style.borderRadius = '2px';
+        deleteButton.style.marginLeft = '55px';
+        deleteButton.style.marginTop = '6px';
+
+        let deleteIcon = document.createElement("i");
+        deleteIcon.classList.add("fa-solid", "fa-trash-can");
+        deleteIcon.style.color = '#FFFFFF';
+        deleteIcon.style.fontSize = '14px';
+
+        deleteButton.appendChild(deleteIcon);
+
+        let newCaption = document.createElement("figcaption");
+        newCaption.innerText = 'éditer';
+
+        newFigure.appendChild(deleteButton);
+        newFigure.appendChild(newImg);
+        newFigure.appendChild(newCaption);
+
+        const modalGallery = document.getElementById('modal-gallery');
+
+        modalGallery.appendChild(newFigure);
+
+        deleteButton.addEventListener('click', function(event) {
+          event.preventDefault();
+          console.log(event.target.id);
+          const idWorks = event.target.id;
+          
+            fetch(`http://localhost:5678/api/works/${idWorks}`, {
+                method: 'DELETE',
+                headers: {
+                    "Content-type": "application/Json",
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+            })
+                .then((response) => {
+                    console.log(response)
+                    alert(response);
+
+                    if (response.status === 201) {
+                        displayWorks(0);
+                    };
+                });
+        });
+      }
+    })
+};
+
+displayWorksModal();
+
+function test() {
+    const publiButton = document.getElementById('publier');
+    console.log(publiButton);
+    publiButton.addEventListener('click', function (event) {
+        console.log(event);
+        displayWorks(0);
+    })
+};
+
+test();
