@@ -1,199 +1,146 @@
+const urlCategories = 'http://localhost:5678/api/categories';
+const urlWorks = 'http://localhost:5678/api/works';
+const urlLogin = 'http://localhost:5678/api/users/login';
+let selectedCategoryId = 0; // par défaut, afficher tous les works
+
 /**
- * 
- * @param {String} param Suppression de tous les projets dans la div Gallery
+ * Suppression des works de la gallerie
  */
-function deleteWorks (param) {
-    console.log(param);
-    //récupération de l'élément avec la classe CSS gallery (Objet HTMLcollection)
- const gallery = document.getElementsByClassName("gallery").item(0);
- console.log(gallery);
-
- //suppression de tous les enfants de cet élément (boucle WHILE)
- //alert("Purge !");
- while (gallery.hasChildNodes()) {
-     gallery.removeChild(gallery.firstChild);
- }
-};
- 
-/**
- * 
- * @param {String} catId Ajout de tous les projets dans la div Gallery
- */
-function displayWorks(catId) {
-
-        // récupération des projets sur l'API
-    fetch("http://localhost:5678/api/works")
-    .then(function(response) {
-        console.log(response);
-        if(response.ok) {
-            return response.json();
-    }
-    })
-
-    .then(function(data) {
-    // une fois qu'on a les données de l'API
-    console.log(data);
-
-    //suppression des projets
-    deleteWorks("api");
-
+function deleteWorks() {
     const gallery = document.getElementsByClassName("gallery").item(0);
-    console.log(gallery);
-
-    //ajout des works issus de l'API (boucle sur les données de l'API)
-    //pour chaque donnée de l'API...
-    setWorks(data, catId);
-    });
-}
-
-/**
- * 
- * @param {String} data Récupération des projets sur l'API
- * @param {String} catId Filtrage des projets en fonction de leur catégorie
- */
-function setWorks (data, catId) {
-    console.log(catId);
-
-    let fiteredData = data;
-  if (catId !== 0) {
-    fiteredData = data.filter((elt) => elt["categoryId"] == catId);
-  } 
-
-    for (let work of fiteredData) {
-
-        //... on crée un noeud de type figure
-        let newFigure = document.createElement("figure");
-            
-            // on créé une balise de type img
-            let newImg = document.createElement("img");
-            newImg.setAttribute("crossorigin", "anonymous");
-            newImg.setAttribute("src", work.imageUrl);
-            newImg.alt = work.title;
-
-            // on crée une balise de type figcaption
-            let newCaption = document.createElement("figcaption");
-            newCaption.innerText = work.title;
-
-            // on met en place la structure DOM des différentes balises crées ci dessus
-            newFigure.appendChild(newImg);
-            newFigure.appendChild(newCaption);
-
-        const gallery = document.getElementsByClassName("gallery").item(0);
-
-        // on ajoute cet élement au DOM dans la DIV gallery
-        gallery.appendChild(newFigure);
-    } 
+    while (gallery.firstChild) {
+        gallery.removeChild(gallery.firstChild);
+    };
 };
 
 /**
- * Afficher les boutons de filtre
+ * Affichage des works dans la gallerie
  */
-function displayButton() {
-// récupération des catégories sur l'API
-    fetch("http://localhost:5678/api/categories")
-        .then(function(response) {
-            console.log(response);
-            if(response.ok) {
+function displayWorks() {
+    fetch(urlWorks)
+        .then(function (response) {
+            if (response.ok) {
                 return response.json();
-        }
-    })
-
-    .then(function(data){
-
-        //ajout du filtre TOUS
-        data.unshift({
-            id: 0,
-            name: 'Tous'
-        });
-
-        console.log(data);
-
-        //récupération de l'élément avec l'ID CSS portfolio
-        const portfolio = document.getElementById("portfolio");
-        console.log(portfolio);
-
-        //on crée un noeud de type ul avec une classe filtres
-        let divFiltres = document.createElement("div");
-        divFiltres.classList.add("filtres");
-        divFiltres.style.display = 'flex';
-        divFiltres.style.flexDirection = 'row';
-        divFiltres.style.justifyContent = 'center';
-        divFiltres.style.columnGap = '10px';
-        divFiltres.style.marginBottom = '50px';
-
-        //ajout des catégories issus de l'API (boucle sur les données de l'API)
-        //pour chaque donnée de l'API...
-        for (let categorie of data) {
-            // on créé une balise de type li
-            let newButton = document.createElement("button");
-            newButton.innerText = categorie.name;
-            newButton.setAttribute('id', 'btn-filtre-' + categorie.id);
-            newButton.value = categorie.id;
-            newButton.addEventListener("click", function(event){
-                console.log(event);
-                console.log(event.target);
-                console.log(event.target.id);
-                deleteWorks("click");
-                if (event.target.value === 0) {
-                    displayWorks()
-                } else {
-                    displayWorks(event.target.value);
-                };
-            });
-            // on ajoute le style aux boutons de filtre
-            newButton.style.fontFamily = 'Syne';
-            newButton.style.fontSize = '16px';
-            newButton.style.fontWeight = '700';
-            newButton.style.lineHeight = '19px';
-            newButton.style.color = '#1D6154';
-            newButton.style.border = '1px solid #1D6154';
-            newButton.style.backgroundColor = '#FFFEF8';
-            newButton.style.borderRadius = '60px';
-            newButton.style.width = 'fit-content';
-            newButton.style.padding = '8px 20px';
-            // on ajoute le style aux bouton de filtre lors du survol
-            newButton.addEventListener("mouseover", function(event){
-                event.target.style.textDecoration = 'none';
-                event.target.style.color = '#FFFFFF';
-                event.target.style.backgroundColor = '#1D6154';
-            });
-            newButton.addEventListener("mouseout", function(event){
-                event.target.style.color = '#1D6154';
-                event.target.style.backgroundColor = '#FFFEF8';
-            });
-
-            // on met en place la structure DOM des différentes balises crées ci dessus
-            divFiltres.appendChild(newButton);
-        };
-
-        // récupération de l'élément avec la class CSS gallery
-        const gallery = document.getElementsByClassName("gallery").item(0);
-
-        // on ajoute cet élement au DOM dans la section portfolio
-        portfolio.insertBefore(divFiltres, gallery);
-    });
+            }
+        })
+        .then(function (data) {
+            deleteWorks(); // effacer les œuvres existantes avant d'afficher les nouvelles
+            for (let work of data) {
+                if (selectedCategoryId === 0 || selectedCategoryId === work.categoryId) {
+                // afficher l'œuvre uniquement si elle appartient à la catégorie sélectionnée ou si toutes les catégories sont sélectionnées
+                let figure = document.createElement("figure");
+                let image = document.createElement("img");
+                image.setAttribute("crossorigin", "anonymous");
+                image.setAttribute("src", work.imageUrl);
+                image.alt = work.title;
+                figure.appendChild(image);
+                let figCaption = document.createElement("figcaption");
+                figCaption.innerText = work.title;
+                figure.appendChild(figCaption);
+                const gallery = document.getElementsByClassName("gallery").item(0);
+                gallery.appendChild(figure);
+                }
+            };
+        })
 };
 
-displayButton();
+/**
+ * Affichage et fonctionnement des boutons filtres
+ */
+function displayFilter() {
+    fetch(urlCategories)
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            };
+        })
 
-// PASSAGE AU MODE EDITION
+        .then(function (data) {
+            data.unshift({
+                id: 0,
+                name: 'Tous'
+            });
+
+            const portfolio = document.getElementById("portfolio");
+            const gallery = document.getElementsByClassName("gallery").item(0);
+
+            let divFiltres = document.createElement("div");
+            divFiltres.classList.add("filtres");
+            divFiltres.style.display = 'flex';
+            divFiltres.style.flexDirection = 'row';
+            divFiltres.style.justifyContent = 'center';
+            divFiltres.style.columnGap = '10px';
+            divFiltres.style.marginBottom = '50px';
+
+            portfolio.insertBefore(divFiltres, gallery);
+
+            for (let categorie of data) {
+                let button = document.createElement("button");
+                button.innerText = categorie.name;
+                button.value = categorie.id;
+                button.addEventListener('click', function (event) {
+                    selectedCategoryId = parseInt(event.target.value); // mettre à jour l'identifiant de la catégorie sélectionnée
+                    displayWorks(); // afficher les works filtrés
+                });
+
+                button.style.fontFamily = 'Syne';
+                button.style.fontSize = '16px';
+                button.style.fontWeight = '700';
+                button.style.lineHeight = '19px';
+                button.style.color = '#1D6154';
+                button.style.border = '1px solid #1D6154';
+                button.style.backgroundColor = '#FFFEF8';
+                button.style.borderRadius = '60px';
+                button.style.width = 'fit-content';
+                button.style.padding = '8px 20px';
+
+                button.addEventListener("mouseover", function(event){
+                    event.target.style.textDecoration = 'none';
+                    event.target.style.color = '#FFFFFF';
+                    event.target.style.backgroundColor = '#1D6154';
+                });
+                button.addEventListener("mouseout", function(event){
+                    event.target.style.color = '#1D6154';
+                    event.target.style.backgroundColor = '#FFFEF8';
+                });
+
+                divFiltres.appendChild(button);
+            };
+        })
+};
+
+displayWorks();
+displayFilter();
+
+// AFFICHAGE DU MODE EDITION APRES CONNEXION DE L'ADMIN
 
 /**
- * Création de la fonction Log Out
+ * Affichage des éléments admin si la connexion est bien effectuée
+ */
+function token() {
+    localStorage.getItem("token");
+    if (localStorage.getItem("token")) {
+        logout();
+        displayEditMode();
+        displayEditButtonIntro();
+        displayEditButtonPhoto();
+        displayEditButtonWorks();
+    };
+};
+
+/**
+ * Déconnexion du compte admin
  */
 function logout() {
     const log = document.querySelector('nav > ul > li > a');
-    console.log(log);
-
     log.innerText = "logout";
-
     log.addEventListener("click", function () {
         localStorage.clear();
     });
 };
 
 /**
- * Afficher la bannière du mode édition
+ * Affichage de la bannière en mode édition
  */
 function displayEditMode() {
     const body = document.querySelector('body');
@@ -234,6 +181,7 @@ function displayEditMode() {
     publi.innerText = 'publier les changements';
     publi.style.color = '#000000';
     publi.style.backgroundColor = '#FFFFFF';
+    publi.style.border = 'none';
     publi.style.borderRadius = '60px';
     publi.style.padding = '11px 23px';
     publi.style.fontFamily = 'Work Sans';
@@ -246,7 +194,7 @@ function displayEditMode() {
 /**
  * Afficher le bouton modifier dans l'introduction
  */
-function displayModifButtonIntro() {
+function displayEditButtonIntro() {
     let modifier = document.createElement('a');
     modifier.innerHTML = '<i class="fas fa-regular fa-pen-to-square fa-lg"></i> modifier';
 
@@ -262,7 +210,7 @@ function displayModifButtonIntro() {
 /**
  * Afficher le bouton modifier pour la photo
  */
-function displayModifButtonPhoto() {
+function displayEditButtonPhoto() {
     let modifier = document.createElement('a');
     modifier.innerHTML = '<i class="fas fa-regular fa-pen-to-square fa-lg"></i> modifier';
     modifier.style.marginLeft = '56px';
@@ -278,7 +226,7 @@ function displayModifButtonPhoto() {
 /**
  * Afficher le bouton modifier pour les projets
  */
-function displayModifButtonWorks() {
+function displayEditButtonWorks() {
     let divTitle = document.createElement('div');
     divTitle.setAttribute('id', 'titlework');
     divTitle.style.display = 'flex';
@@ -303,116 +251,83 @@ function displayModifButtonWorks() {
     divTitle.appendChild(modifier);
 };
 
-/**
- * Affichage des diverses fonctions si on est correctement connecté
- */
-function token() {
-    // Vérification de la récupération du token
-    localStorage.getItem("token");
-    console.log(localStorage);
-
-    // Si le token est récupéré
-    if (localStorage.getItem("token")) {
-        logout();
-        displayEditMode();
-        displayModifButtonIntro();
-        displayModifButtonPhoto();
-        displayModifButtonWorks();
-    };
-};
-
 token();
 
+// AFFICHAGE ET FONCTIONNALITES DE LA MODALE
+
+/**
+ * Affichage et suppression des works dans la modale
+ */
 function displayWorksModal() {
-  fetch("http://localhost:5678/api/works")
-    .then(function (response) {
-      console.log(response);
-      if (response.ok) {
-        return response.json();
-      }
-    })
+    fetch("http://localhost:5678/api/works")
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            }
+        })
+    
+        .then(function (data) {
 
-    .then(function (data) {
-      // une fois qu'on a les données de l'API
-      console.log(data);
+            for (let work of data) {
+                let newFigure = document.createElement("figure");
+                newFigure.style.width = '85px';
+                newFigure.style.height = '128px';
+                newFigure.style.position = 'relative';
 
-      for (let work of data) {
-        let newFigure = document.createElement("figure");
-        newFigure.style.width = '85px';
-        newFigure.style.height = '128px';
-        newFigure.style.position = 'relative';
+                let newImg = document.createElement("img");
+                newImg.setAttribute("crossorigin", "anonymous");
+                newImg.setAttribute("src", work.imageUrl);
+                newImg.alt = work.title;
+                newImg.style.width = '100%';
+                newImg.style.objectFit = 'cover';
 
-        let newImg = document.createElement("img");
-        newImg.setAttribute("crossorigin", "anonymous");
-        newImg.setAttribute("src", work.imageUrl);
-        newImg.alt = work.title;
-        newImg.style.width = '100%';
-        newImg.style.objectFit = 'cover';
+                let deleteButton = document.createElement("button");
+                deleteButton.setAttribute("id", work.id);
+                deleteButton.classList.add('js-delete-button');
+                deleteButton.style.position = 'absolute';
+                deleteButton.style.backgroundColor = '#000000';
+                deleteButton.style.padding = '4px';
+                deleteButton.style.border = 'none';
+                deleteButton.style.borderRadius = '2px';
+                deleteButton.style.marginLeft = '55px';
+                deleteButton.style.marginTop = '6px';
 
-        let deleteButton = document.createElement("button");
-        deleteButton.setAttribute("id", work.id);
-        deleteButton.classList.add('js-delete-button');
-        deleteButton.style.position = 'absolute';
-        deleteButton.style.backgroundColor = '#000000';
-        deleteButton.style.padding = '4px';
-        deleteButton.style.border = 'none';
-        deleteButton.style.borderRadius = '2px';
-        deleteButton.style.marginLeft = '55px';
-        deleteButton.style.marginTop = '6px';
+                let deleteIcon = document.createElement("i");
+                deleteIcon.classList.add("fa-solid", "fa-trash-can");
+                deleteIcon.style.color = '#FFFFFF';
+                deleteIcon.style.fontSize = '14px';
 
-        let deleteIcon = document.createElement("i");
-        deleteIcon.classList.add("fa-solid", "fa-trash-can");
-        deleteIcon.style.color = '#FFFFFF';
-        deleteIcon.style.fontSize = '14px';
+                deleteButton.appendChild(deleteIcon);
 
-        deleteButton.appendChild(deleteIcon);
+                let newCaption = document.createElement("figcaption");
+                newCaption.innerText = 'éditer';
 
-        let newCaption = document.createElement("figcaption");
-        newCaption.innerText = 'éditer';
+                newFigure.appendChild(deleteButton);
+                newFigure.appendChild(newImg);
+                newFigure.appendChild(newCaption);
 
-        newFigure.appendChild(deleteButton);
-        newFigure.appendChild(newImg);
-        newFigure.appendChild(newCaption);
+                const modalGallery = document.getElementById('modal-gallery');
+                modalGallery.appendChild(newFigure);
 
-        const modalGallery = document.getElementById('modal-gallery');
+                deleteButton.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const idWorks = event.target.id;
 
-        modalGallery.appendChild(newFigure);
-
-        deleteButton.addEventListener('click', function(event) {
-          event.preventDefault();
-          console.log(event.target.id);
-          const idWorks = event.target.id;
-          
-            fetch(`http://localhost:5678/api/works/${idWorks}`, {
-                method: 'DELETE',
-                headers: {
-                    "Content-type": "application/Json",
-                    Authorization: "Bearer " + localStorage.getItem("token"),
-                },
-            })
-                .then((response) => {
-                    console.log(response)
-                    alert(response);
-
-                    if (response.status === 201) {
-                        displayWorks(0);
-                    };
-                });
-        });
-      }
-    })
+                    fetch(`http://localhost:5678/api/works/${idWorks}`, {
+                        method: 'DELETE',
+                        headers: {
+                            "Content-type": "application/Json",
+                            Authorization: "Bearer " + localStorage.getItem("token"),
+                        },
+                    })
+                        .then((response) => {
+                            if (response.status === 201) {
+                                displayWorks();
+                            };
+                        });
+                })
+            };
+        })
 };
-
 
 displayWorksModal();
-
-function test() {
-    const publiButton = document.getElementById('publier');
-    console.log(publiButton);
-    publiButton.addEventListener('click', function (event) {
-        console.log(event);
-        displayWorks(0);
-    })
-};
-
-//test();
