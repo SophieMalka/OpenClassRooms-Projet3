@@ -318,6 +318,10 @@ function displayWorksModal() {
         })
 };
 
+/**
+ * Envoie une requête HTTP DELETE à l'API pour supprimer les works correspondant à l'identifiant fourni
+ * @param {Number} idWorks Identifiant des works à supprimer
+ */
 function deleteWorksModal(idWorks) {
     fetch(`http://localhost:5678/api/works/${idWorks}`, {
         method: 'DELETE',
