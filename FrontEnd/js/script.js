@@ -144,7 +144,6 @@ function logout() {
  */
 function displayEditMode() {
     const body = document.querySelector('body');
-    console.log(body);
     body.style.flexWrap = 'wrap';
     body.style.marginTop = '0';
     body.style.maxWidth = '100%';
@@ -199,7 +198,6 @@ function displayEditButtonIntro() {
     modifier.innerHTML = '<i class="fas fa-regular fa-pen-to-square fa-lg"></i> modifier';
 
     const articleIntro = document.querySelector('#introduction > article');
-    console.log(articleIntro);
 
     const titleIntro = document.querySelector('#introduction > article > h2');
     titleIntro.style.marginTop = '1em';
@@ -312,7 +310,7 @@ function displayWorksModal() {
                 deleteButton.addEventListener('click', function (event) {
                     event.preventDefault();
                     const idWorks = event.target.id;
-                    deleteWorksModal(idWorks)
+                    deleteWorksApi(idWorks)
                 })
             };
         })
@@ -322,7 +320,7 @@ function displayWorksModal() {
  * Envoie une requête HTTP DELETE à l'API pour supprimer les works correspondant à l'identifiant fourni
  * @param {Number} idWorks Identifiant des works à supprimer
  */
-function deleteWorksModal(idWorks) {
+function deleteWorksApi(idWorks) {
     fetch(`http://localhost:5678/api/works/${idWorks}`, {
         method: 'DELETE',
         headers: {
@@ -337,4 +335,56 @@ function deleteWorksModal(idWorks) {
         });
 };
 
+/**
+ * Affichage de la modale en mode ajout de works au clic sur le bouton ajouter une photo
+ */
+function displayAddWorksModal() {
+    const addWorksButton = document.getElementsByClassName('js-add-works').item(0);
+    addWorksButton.addEventListener('click', function() {
+        updateModal();
+    });
+};
+
+/**
+ * Mise à jour du contenu de la modale avec les éléments d'ajout de works
+ */
+function updateModal() {
+    const modalWrapper = document.querySelector('.modal-wrapper');
+
+    const modalNav = document.createElement('div');
+    modalNav.classList.add('modal-nav');
+    modalNav.style.display = 'flex';
+    modalNav.style.justifyContent = 'space-between';
+
+    modalWrapper.prepend(modalNav);
+
+    const closeButton = document.querySelector('.js-close-modal');
+
+    const goBackButton = document.createElement('button');
+    goBackButton.classList.add('js-go-back-button');
+    goBackButton.innerHTML = '<i class="fa-solid fa-arrow-left"></i>';
+    goBackButton.style.border = 'none';
+    goBackButton.style.background = 'none';
+    goBackButton.style.marginLeft = '36px';
+    goBackButton.style.fontSize = '12px';
+
+    modalNav.appendChild(goBackButton);
+    modalNav.appendChild(closeButton);
+
+    const titleModal = document.querySelector('.modal-wrapper > h3');
+    titleModal.innerText = "Ajout photo";
+
+    const gallery = document.getElementById('modal-gallery');
+    while (gallery.firstChild) {
+        gallery.removeChild(gallery.firstChild);
+    };
+
+    const addWorkButton = document.querySelector('.js-add-works');
+    addWorkButton.innerHTML = "Valider";
+
+    const linkDeleteGallery = document.querySelector('.js-delete-works');
+    modalWrapper.removeChild(linkDeleteGallery);
+};
+
 displayWorksModal();
+displayAddWorksModal();
