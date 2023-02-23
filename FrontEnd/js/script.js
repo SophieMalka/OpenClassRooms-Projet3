@@ -312,22 +312,25 @@ function displayWorksModal() {
                 deleteButton.addEventListener('click', function (event) {
                     event.preventDefault();
                     const idWorks = event.target.id;
-
-                    fetch(`http://localhost:5678/api/works/${idWorks}`, {
-                        method: 'DELETE',
-                        headers: {
-                            "Content-type": "application/Json",
-                            Authorization: "Bearer " + localStorage.getItem("token"),
-                        },
-                    })
-                        .then((response) => {
-                            if (response.status === 201) {
-                                displayWorks();
-                            };
-                        });
+                    deleteWorksModal(idWorks)
                 })
             };
         })
+};
+
+function deleteWorksModal(idWorks) {
+    fetch(`http://localhost:5678/api/works/${idWorks}`, {
+        method: 'DELETE',
+        headers: {
+            "Content-type": "application/Json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+    })
+        .then((response) => {
+            if (response.status === 201) {
+                displayWorks();
+            };
+        });
 };
 
 displayWorksModal();
