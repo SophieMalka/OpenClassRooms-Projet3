@@ -335,14 +335,27 @@ function deleteWorksApi(idWorks) {
         });
 };
 
+displayWorksModal();
+
 /**
  * Affichage de la modale en mode ajout de works au clic sur le bouton ajouter une photo
  */
 function displayAddWorksModal() {
     const addWorksButton = document.getElementsByClassName('js-add-works').item(0);
-    addWorksButton.addEventListener('click', function() {
+    addWorksButton.addEventListener('click', function () {
+        deleteModalGallery();
         updateModal();
     });
+};
+
+/**
+ * Suppression du contenu de la div gallery dans la modal
+ */
+function deleteModalGallery() {
+    const gallery = document.getElementById('modal-gallery');
+    while (gallery.firstChild) {
+        gallery.removeChild(gallery.firstChild);
+    };
 };
 
 /**
@@ -375,9 +388,48 @@ function updateModal() {
     titleModal.innerText = "Ajout photo";
 
     const gallery = document.getElementById('modal-gallery');
-    while (gallery.firstChild) {
-        gallery.removeChild(gallery.firstChild);
-    };
+
+    const containImg = document.createElement('div');
+    containImg.classList.add('container-img');
+    containImg.style.width = '100%';
+    containImg.style.height = 'fit-content';
+    containImg.style.backgroundColor = '#E8F1F6';
+    containImg.style.display = 'flex';
+    containImg.style.flexDirection = 'column';
+    containImg.style.alignItems = 'center';
+    containImg.style.padding = '28px';
+
+    const iconImg = document.createElement('img');
+    iconImg.src = 'assets/icons/icon-img.png'
+    iconImg.style.width = '58px';
+    iconImg.style.height = '52px';
+    iconImg.style.marginBottom = '21px';
+
+    const addImgButton = document.createElement('button');
+    addImgButton.innerText = '+ Ajouter photo';
+    addImgButton.style.width = '173px';
+    addImgButton.style.height = '36px';
+    addImgButton.style.fontSize = '14px';
+    addImgButton.style.fontStyle = 'medium';
+    addImgButton.style.lineHeight = '16px';
+    addImgButton.style.color = '#306685';
+    addImgButton.style.fontFamily = 'Work Sans';
+    addImgButton.style.backgroundColor = '#CBD6DC';
+    addImgButton.style.border = 'none';
+    addImgButton.style.borderRadius = '50px';
+    addImgButton.style.marginBottom = '7px';
+
+    const infoAddImg = document.createElement('p');
+    infoAddImg.innerText = 'jpg, png : 4mo max';
+    infoAddImg.style.fontFamily = 'Work Sans';
+    infoAddImg.style.fontSize = '10px';
+    infoAddImg.style.color = '#444444';
+
+
+    gallery.appendChild(containImg);
+    containImg.appendChild(iconImg);
+    containImg.appendChild(addImgButton);
+    containImg.appendChild(infoAddImg);
 
     const addWorkButton = document.querySelector('.js-add-works');
     addWorkButton.innerHTML = "Valider";
@@ -386,5 +438,4 @@ function updateModal() {
     modalWrapper.removeChild(linkDeleteGallery);
 };
 
-displayWorksModal();
 displayAddWorksModal();
