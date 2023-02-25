@@ -282,6 +282,7 @@ function displayWorksModal() {
                 let deleteButton = document.createElement("button");
                 deleteButton.setAttribute("id", work.id);
                 deleteButton.classList.add('js-delete-button');
+                deleteButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
                 deleteButton.style.position = 'absolute';
                 deleteButton.style.backgroundColor = '#000000';
                 deleteButton.style.padding = '4px';
@@ -289,13 +290,8 @@ function displayWorksModal() {
                 deleteButton.style.borderRadius = '2px';
                 deleteButton.style.marginLeft = '55px';
                 deleteButton.style.marginTop = '6px';
-
-                let deleteIcon = document.createElement("i");
-                deleteIcon.classList.add("fa-solid", "fa-trash-can");
-                deleteIcon.style.color = '#FFFFFF';
-                deleteIcon.style.fontSize = '14px';
-
-                deleteButton.appendChild(deleteIcon);
+                deleteButton.style.color = '#FFFFFF';
+                deleteButton.style.fontSize = '14px';
 
                 let newCaption = document.createElement("figcaption");
                 newCaption.innerText = 'éditer';
@@ -398,6 +394,7 @@ function updateModal() {
     containImg.style.flexDirection = 'column';
     containImg.style.alignItems = 'center';
     containImg.style.padding = '28px';
+    containImg.style.marginBottom = '30px';
 
     const iconImg = document.createElement('img');
     iconImg.src = 'assets/icons/icon-img.png'
@@ -425,14 +422,55 @@ function updateModal() {
     infoAddImg.style.fontSize = '10px';
     infoAddImg.style.color = '#444444';
 
-
     gallery.appendChild(containImg);
     containImg.appendChild(iconImg);
     containImg.appendChild(addImgButton);
     containImg.appendChild(infoAddImg);
 
+    const formAddImg = document.createElement('form');
+    formAddImg.style.display = 'flex';
+    formAddImg.style.flexDirection = 'column';
+    formAddImg.style.rowGap = '10px';
+    formAddImg.style.width = '100%';
+    formAddImg.style.marginBottom = '17px';
+
+    const labelTitle = document.createElement('label');
+    labelTitle.setAttribute('for', 'title');
+    labelTitle.innerText = 'Titre';
+    labelTitle.style.fontFamily = 'Work Sans';
+    labelTitle.style.fontSize = '14px';
+
+    let inputTitle = document.createElement('input');
+    inputTitle.setAttribute('type', 'text');
+    inputTitle.setAttribute('name', 'title');
+    inputTitle.setAttribute('id', 'title');
+    inputTitle.setAttribute('required', 'required');
+    inputTitle.style.height = '51px';
+    inputTitle.style.border = 'none';
+    inputTitle.style.boxShadow = '0px 4px 14px 0px rgba(0, 0, 0, 0.09)';
+    inputTitle.style.marginBottom = '10px';
+
+    const labelCategory = document.createElement('label');
+    labelCategory.setAttribute('for', 'category');
+    labelCategory.innerText = 'Catégorie';
+    labelCategory.style.fontFamily = 'Work Sans';
+    labelCategory.style.fontSize = '14px';
+
+    let selectCategory = document.createElement('select');
+    selectCategory.style.height = '51px';
+    selectCategory.style.border = 'none';
+    selectCategory.style.boxShadow = '0px 4px 14px 0px rgba(0, 0, 0, 0.09)';
+    selectCategory.style.backgroundColor = '#FFFFFF';
+
+    gallery.appendChild(formAddImg);
+    formAddImg.appendChild(labelTitle);
+    formAddImg.appendChild(inputTitle);
+    formAddImg.appendChild(labelCategory);
+    formAddImg.appendChild(selectCategory);
+
     const addWorkButton = document.querySelector('.js-add-works');
     addWorkButton.innerHTML = "Valider";
+    addWorkButton.style.backgroundColor = '#A7A7A7';
 
     const linkDeleteGallery = document.querySelector('.js-delete-works');
     modalWrapper.removeChild(linkDeleteGallery);
