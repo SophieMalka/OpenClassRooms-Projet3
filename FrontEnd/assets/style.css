@@ -257,6 +257,7 @@ footer nav ul {
 	padding-right: 36px;
 	font-size: 12px;
 	text-align: right;
+	cursor: pointer;
 }
 
 #modal-gallery {
@@ -277,9 +278,9 @@ footer nav ul {
 	background-color: #1D6154;
 	border: 0px;
 	border-radius: 60px;
-	width: 270px;
 	padding: 10px 49px;
 	margin: auto;
+	cursor: pointer;
 }
 
 .js-delete-works {

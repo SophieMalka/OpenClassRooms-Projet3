@@ -402,19 +402,32 @@ function updateModal() {
     iconImg.style.height = '52px';
     iconImg.style.marginBottom = '21px';
 
-    const addImgButton = document.createElement('button');
-    addImgButton.innerText = '+ Ajouter photo';
-    addImgButton.style.width = '173px';
-    addImgButton.style.height = '36px';
-    addImgButton.style.fontSize = '14px';
-    addImgButton.style.fontStyle = 'medium';
-    addImgButton.style.lineHeight = '16px';
-    addImgButton.style.color = '#306685';
-    addImgButton.style.fontFamily = 'Work Sans';
-    addImgButton.style.backgroundColor = '#CBD6DC';
-    addImgButton.style.border = 'none';
-    addImgButton.style.borderRadius = '50px';
-    addImgButton.style.marginBottom = '7px';
+    const formImg = document.createElement('form');
+    formImg.style.marginBottom = '17px';
+
+    const labelAddImgButton = document.createElement('label');
+    labelAddImgButton.setAttribute('for', 'file');
+    labelAddImgButton.innerText = '+ Ajouter photo';
+    labelAddImgButton.style.padding = '10px 33px';
+    labelAddImgButton.style.fontSize = '14px';
+    labelAddImgButton.style.fontStyle = 'medium';
+    labelAddImgButton.style.lineHeight = '16px';
+    labelAddImgButton.style.color = '#306685';
+    labelAddImgButton.style.fontFamily = 'Work Sans';
+    labelAddImgButton.style.backgroundColor = '#CBD6DC';
+    labelAddImgButton.style.border = 'none';
+    labelAddImgButton.style.borderRadius = '50px';
+    labelAddImgButton.style.cursor = 'pointer';
+
+    const addImgButton = document.createElement('input');
+    addImgButton.type = 'file';
+    addImgButton.setAttribute('id', 'file');
+    addImgButton.style.width = '0';
+    addImgButton.style.height = '0';
+    addImgButton.style.overflow = 'hidden';
+
+    formImg.appendChild(labelAddImgButton);
+    formImg.appendChild(addImgButton);
 
     const infoAddImg = document.createElement('p');
     infoAddImg.innerText = 'jpg, png : 4mo max';
@@ -424,7 +437,7 @@ function updateModal() {
 
     gallery.appendChild(containImg);
     containImg.appendChild(iconImg);
-    containImg.appendChild(addImgButton);
+    containImg.appendChild(formImg);
     containImg.appendChild(infoAddImg);
 
     const formAddImg = document.createElement('form');
