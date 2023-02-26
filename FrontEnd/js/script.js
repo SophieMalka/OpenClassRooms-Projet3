@@ -445,10 +445,11 @@ function updateModal() {
     inputTitle.setAttribute('name', 'title');
     inputTitle.setAttribute('id', 'title');
     inputTitle.setAttribute('required', 'required');
-    inputTitle.style.height = '51px';
     inputTitle.style.border = 'none';
     inputTitle.style.boxShadow = '0px 4px 14px 0px rgba(0, 0, 0, 0.09)';
     inputTitle.style.marginBottom = '10px';
+    inputTitle.style.padding = '17px';
+    inputTitle.style.fontFamily = 'Work Sans';
 
     const labelCategory = document.createElement('label');
     labelCategory.setAttribute('for', 'category');
@@ -456,11 +457,32 @@ function updateModal() {
     labelCategory.style.fontFamily = 'Work Sans';
     labelCategory.style.fontSize = '14px';
 
-    let selectCategory = document.createElement('select');
+    const selectCategory = document.createElement('select');
     selectCategory.style.height = '51px';
     selectCategory.style.border = 'none';
     selectCategory.style.boxShadow = '0px 4px 14px 0px rgba(0, 0, 0, 0.09)';
     selectCategory.style.backgroundColor = '#FFFFFF';
+    selectCategory.style.padding = '17px';
+    selectCategory.style.fontFamily = 'Work Sans';
+
+    const optionObject = document.createElement('option');
+    optionObject.setAttribute('id', '1');
+    optionObject.setAttribute('name', 'Objets');
+    optionObject.innerText = 'Objets';
+
+    const optionAppart = document.createElement('option');
+    optionAppart.setAttribute('id', '2');
+    optionAppart.setAttribute('name', 'Appartements');
+    optionAppart.innerText = 'Appartements';
+
+    const optionHotel = document.createElement('option');
+    optionHotel.setAttribute('id', '3');
+    optionHotel.setAttribute('name', 'Hotels & restaurants');
+    optionHotel.innerText = 'Hotels & restaurants';
+
+    selectCategory.appendChild(optionObject);
+    selectCategory.appendChild(optionAppart);
+    selectCategory.appendChild(optionHotel);
 
     gallery.appendChild(formAddImg);
     formAddImg.appendChild(labelTitle);
