@@ -385,22 +385,22 @@ function updateModal() {
 
     const gallery = document.getElementById('modal-gallery');
 
-    const containImg = document.createElement('div');
-    containImg.classList.add('container-img');
-    containImg.style.width = '100%';
-    containImg.style.height = 'fit-content';
-    containImg.style.backgroundColor = '#E8F1F6';
-    containImg.style.display = 'flex';
-    containImg.style.flexDirection = 'column';
-    containImg.style.alignItems = 'center';
-    containImg.style.padding = '28px';
-    containImg.style.marginBottom = '30px';
+    const containAddImg = document.createElement('div');
+    containAddImg.classList.add('container-add-img');
+    containAddImg.style.width = '100%';
+    containAddImg.style.height = 'fit-content';
+    containAddImg.style.backgroundColor = '#E8F1F6';
+    containAddImg.style.display = 'flex';
+    containAddImg.style.flexDirection = 'column';
+    containAddImg.style.alignItems = 'center';
+    containAddImg.style.padding = '28px';
+    containAddImg.style.marginBottom = '30px';
 
-    const iconImg = document.createElement('img');
-    iconImg.src = 'assets/icons/icon-img.png'
-    iconImg.style.width = '58px';
-    iconImg.style.height = '52px';
-    iconImg.style.marginBottom = '21px';
+    const imgPreview = document.createElement('img');
+    imgPreview.src = 'assets/icons/icon-img.png'
+    imgPreview.style.width = 'auto';
+    imgPreview.style.maxHeight = '90px';
+    imgPreview.style.marginBottom = '21px';
 
     const formImg = document.createElement('form');
     formImg.style.marginBottom = '17px';
@@ -425,6 +425,19 @@ function updateModal() {
     addImgButton.style.width = '0';
     addImgButton.style.height = '0';
     addImgButton.style.overflow = 'hidden';
+    addImgButton.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+
+        const reader = new FileReader();
+
+        reader.addEventListener('load', () => {
+            imgPreview.src = reader.result;
+        });
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
 
     formImg.appendChild(labelAddImgButton);
     formImg.appendChild(addImgButton);
@@ -435,10 +448,10 @@ function updateModal() {
     infoAddImg.style.fontSize = '10px';
     infoAddImg.style.color = '#444444';
 
-    gallery.appendChild(containImg);
-    containImg.appendChild(iconImg);
-    containImg.appendChild(formImg);
-    containImg.appendChild(infoAddImg);
+    gallery.appendChild(containAddImg);
+    containAddImg.appendChild(imgPreview);
+    containAddImg.appendChild(formImg);
+    containAddImg.appendChild(infoAddImg);
 
     const formAddImg = document.createElement('form');
     formAddImg.style.display = 'flex';
