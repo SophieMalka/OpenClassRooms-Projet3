@@ -254,6 +254,55 @@ token();
 // AFFICHAGE ET FONCTIONNALITES DE LA MODALE
 
 /**
+ * Affichage de la modale
+ */
+function displayModal() {
+    const modalWrapper = document.querySelector('.modal-wrapper');
+
+    const modalNav = document.createElement('div');
+    modalNav.classList.add('modal-nav');
+    modalNav.style.display = 'flex';
+    modalNav.style.justifyContent = 'right';
+    modalNav.style.margin = '32px 32px 0px 32px';
+
+    const closeModalButton = document.createElement('button');
+    closeModalButton.classList.add('js-close-modal');
+    closeModalButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+    modalNav.appendChild(closeModalButton);
+
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+
+    modalWrapper.appendChild(modalNav);
+    modalWrapper.appendChild(modalContent);
+
+    const titleModal = document.createElement('h3');
+    titleModal.innerText = 'Galerie photo';
+
+    const containerGallery = document.createElement('div');
+    containerGallery.setAttribute('id', 'modal-gallery');
+
+    const addWorkButton = document.createElement('button');
+    addWorkButton.classList.add('js-add-works');
+    addWorkButton.innerText = 'Ajouter une photo';
+    addWorkButton.addEventListener('click', function () {
+        deleteModal();
+        updateModal();
+    });
+
+    const linkDelete = document.createElement('a');
+    linkDelete.href = '#';
+    linkDelete.classList.add('js-delete-works');
+    linkDelete.innerText = 'Supprimer la galerie';
+
+    modalContent.appendChild(titleModal);
+    modalContent.appendChild(containerGallery);
+    modalContent.appendChild(addWorkButton);
+    modalContent.appendChild(linkDelete);
+};
+
+/**
  * Affichage et suppression des works dans la modale
  */
 function displayWorksModal() {
@@ -268,7 +317,7 @@ function displayWorksModal() {
 
             for (let work of data) {
                 let newFigure = document.createElement("figure");
-                newFigure.style.width = '85px';
+                newFigure.style.width = '78px';
                 newFigure.style.height = '128px';
                 newFigure.style.position = 'relative';
 
@@ -331,6 +380,7 @@ function deleteWorksApi(idWorks) {
         });
 };
 
+displayModal();
 displayWorksModal();
 
 /**
@@ -339,18 +389,18 @@ displayWorksModal();
 function displayAddWorksModal() {
     const addWorksButton = document.getElementsByClassName('js-add-works').item(0);
     addWorksButton.addEventListener('click', function () {
-        deleteModalGallery();
+        deleteModal();
         updateModal();
     });
 };
 
 /**
- * Suppression du contenu de la div gallery dans la modal
+ * Suppression du contenu intégral de la modal
  */
-function deleteModalGallery() {
-    const gallery = document.getElementById('modal-gallery');
-    while (gallery.firstChild) {
-        gallery.removeChild(gallery.firstChild);
+function deleteModal() {
+    const modalWrapper = document.querySelector('.modal-wrapper');
+    while (modalWrapper.firstChild) {
+        modalWrapper.removeChild(modalWrapper.firstChild);
     };
 };
 
@@ -364,46 +414,57 @@ function updateModal() {
     modalNav.classList.add('modal-nav');
     modalNav.style.display = 'flex';
     modalNav.style.justifyContent = 'space-between';
+    modalNav.style.margin = '32px 32px 0px 32px';
 
-    modalWrapper.prepend(modalNav);
-
-    const closeButton = document.querySelector('.js-close-modal');
+    const closeModalButton = document.createElement('button');
+    closeModalButton.classList.add('js-close-modal');
+    closeModalButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
 
     const goBackButton = document.createElement('button');
     goBackButton.classList.add('js-go-back-button');
     goBackButton.innerHTML = '<i class="fa-solid fa-arrow-left"></i>';
     goBackButton.style.border = 'none';
     goBackButton.style.background = 'none';
-    goBackButton.style.marginLeft = '36px';
     goBackButton.style.fontSize = '12px';
+    goBackButton.style.cursor = 'pointer';
+    goBackButton.addEventListener('click', function () {
+        deleteModal();
+        displayModal();
+        displayWorksModal();
+    });
 
     modalNav.appendChild(goBackButton);
-    modalNav.appendChild(closeButton);
+    modalNav.appendChild(closeModalButton);
 
-    const titleModal = document.querySelector('.modal-wrapper > h3');
+    const titleModal = document.createElement('h3');
     titleModal.innerText = "Ajout photo";
 
-    const gallery = document.getElementById('modal-gallery');
+    const formAddWork = document.createElement('form');
+    formAddWork.style.margin = '32px 100px 32px 100px';
+    formAddWork.style.display = 'flex';
+    formAddWork.style.flexDirection = 'column';
 
-    const containAddImg = document.createElement('div');
-    containAddImg.classList.add('container-add-img');
-    containAddImg.style.width = '100%';
-    containAddImg.style.height = 'fit-content';
-    containAddImg.style.backgroundColor = '#E8F1F6';
-    containAddImg.style.display = 'flex';
-    containAddImg.style.flexDirection = 'column';
-    containAddImg.style.alignItems = 'center';
-    containAddImg.style.padding = '28px';
-    containAddImg.style.marginBottom = '30px';
+    modalWrapper.append(modalNav);
+    modalWrapper.appendChild(titleModal);
+    modalWrapper.appendChild(formAddWork);
+
+    const containerFormImg = document.createElement('div');
+    containerFormImg.classList.add('container-add-img');
+    containerFormImg.style.height = 'fit-content';
+    containerFormImg.style.backgroundColor = '#E8F1F6';
+    containerFormImg.style.display = 'flex';
+    containerFormImg.style.flexDirection = 'column';
+    containerFormImg.style.alignItems = 'center';
+    containerFormImg.style.padding = '28px';
+    containerFormImg.style.marginBottom = '30px';
+    formAddWork.appendChild(containerFormImg);
 
     const imgPreview = document.createElement('img');
     imgPreview.src = 'assets/icons/icon-img.png'
     imgPreview.style.width = 'auto';
     imgPreview.style.maxHeight = '90px';
     imgPreview.style.marginBottom = '21px';
-
-    const formImg = document.createElement('form');
-    formImg.style.marginBottom = '17px';
+    containerFormImg.appendChild(imgPreview);
 
     const labelAddImgButton = document.createElement('label');
     labelAddImgButton.setAttribute('for', 'file');
@@ -439,32 +500,30 @@ function updateModal() {
         }
     });
 
-    formImg.appendChild(labelAddImgButton);
-    formImg.appendChild(addImgButton);
-
     const infoAddImg = document.createElement('p');
     infoAddImg.innerText = 'jpg, png : 4mo max';
     infoAddImg.style.fontFamily = 'Work Sans';
     infoAddImg.style.fontSize = '10px';
     infoAddImg.style.color = '#444444';
+    infoAddImg.style.marginTop = '7px';
 
-    gallery.appendChild(containAddImg);
-    containAddImg.appendChild(imgPreview);
-    containAddImg.appendChild(formImg);
-    containAddImg.appendChild(infoAddImg);
+    containerFormImg.appendChild(labelAddImgButton);
+    containerFormImg.appendChild(addImgButton);
+    containerFormImg.appendChild(infoAddImg);
 
-    const formAddImg = document.createElement('form');
-    formAddImg.style.display = 'flex';
-    formAddImg.style.flexDirection = 'column';
-    formAddImg.style.rowGap = '10px';
-    formAddImg.style.width = '100%';
-    formAddImg.style.marginBottom = '17px';
+    const containerFormInfo = document.createElement('div');
+    containerFormInfo.style.borderBottom = 'solid 1px #B3B3B3';
+    containerFormInfo.style.display = 'flex';
+    containerFormInfo.style.flexDirection = 'column';
+    containerFormInfo.style.marginBottom = '32px';
+    formAddWork.appendChild(containerFormInfo);
 
     const labelTitle = document.createElement('label');
     labelTitle.setAttribute('for', 'title');
     labelTitle.innerText = 'Titre';
     labelTitle.style.fontFamily = 'Work Sans';
     labelTitle.style.fontSize = '14px';
+    labelTitle.style.marginBottom = '10px';
 
     let inputTitle = document.createElement('input');
     inputTitle.setAttribute('type', 'text');
@@ -473,7 +532,7 @@ function updateModal() {
     inputTitle.setAttribute('required', 'required');
     inputTitle.style.border = 'none';
     inputTitle.style.boxShadow = '0px 4px 14px 0px rgba(0, 0, 0, 0.09)';
-    inputTitle.style.marginBottom = '10px';
+    inputTitle.style.marginBottom = '21px';
     inputTitle.style.padding = '17px';
     inputTitle.style.fontFamily = 'Work Sans';
 
@@ -482,6 +541,7 @@ function updateModal() {
     labelCategory.innerText = 'Catégorie';
     labelCategory.style.fontFamily = 'Work Sans';
     labelCategory.style.fontSize = '14px';
+    labelCategory.style.marginBottom = '10px';
 
     const selectCategory = document.createElement('select');
     selectCategory.style.height = '51px';
@@ -489,7 +549,13 @@ function updateModal() {
     selectCategory.style.boxShadow = '0px 4px 14px 0px rgba(0, 0, 0, 0.09)';
     selectCategory.style.backgroundColor = '#FFFFFF';
     selectCategory.style.padding = '17px';
+    selectCategory.style.marginBottom = '47px';
     selectCategory.style.fontFamily = 'Work Sans';
+
+    containerFormInfo.appendChild(labelTitle);
+    containerFormInfo.appendChild(inputTitle);
+    containerFormInfo.appendChild(labelCategory);
+    containerFormInfo.appendChild(selectCategory);
 
     const optionObject = document.createElement('option');
     optionObject.setAttribute('id', '1');
@@ -510,18 +576,13 @@ function updateModal() {
     selectCategory.appendChild(optionAppart);
     selectCategory.appendChild(optionHotel);
 
-    gallery.appendChild(formAddImg);
-    formAddImg.appendChild(labelTitle);
-    formAddImg.appendChild(inputTitle);
-    formAddImg.appendChild(labelCategory);
-    formAddImg.appendChild(selectCategory);
+    const validForm = document.createElement('button');
+    validForm.classList.add('js-add-works');
+    validForm.type = 'submit';
+    validForm.innerText = 'Valider';
+    validForm.style.backgroundColor = '#A7A7A7';
 
-    const addWorkButton = document.querySelector('.js-add-works');
-    addWorkButton.innerHTML = "Valider";
-    addWorkButton.style.backgroundColor = '#A7A7A7';
-
-    const linkDeleteGallery = document.querySelector('.js-delete-works');
-    modalWrapper.removeChild(linkDeleteGallery);
+    formAddWork.appendChild(validForm);
 };
 
 displayAddWorksModal();

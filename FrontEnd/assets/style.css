@@ -242,19 +242,22 @@ footer nav ul {
 	overflow: auto;
 	width: 630px;
 	max-width: calc(100vw - 100px);
-	max-height: calc(100vh - 100px);
-	padding-top: 32px;
-	padding-bottom: 60px;
+	max-height: calc(105vh - 100px);
 	background-color: #FFFFFF;
 	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
 }
 
+.modal-content {
+	display: flex;
+	flex-direction: column;
+	padding: 32px 100px 60px 100px;
+}
+
 .js-close-modal {
 	border: none;
 	background: none;
-	padding-right: 36px;
 	font-size: 12px;
 	text-align: right;
 	cursor: pointer;
@@ -263,7 +266,8 @@ footer nav ul {
 #modal-gallery {
 	display: flex;
 	flex-wrap: wrap;
-	margin: 46px 75px 20px 75px;
+	margin-top: 46px;
+	margin-bottom: 20px;
 	padding-bottom: 30px;
 	gap: 10px;
 	border-bottom: solid 1px #B3B3B3;
@@ -274,6 +278,8 @@ footer nav ul {
 	font-size: 16px;
 	font-weight: 700;
 	line-height: 19px;
+	width: fit-content;
+	min-width: 237px;
 	color: #FFFFFF;
 	background-color: #1D6154;
 	border: 0px;
