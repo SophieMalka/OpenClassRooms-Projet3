@@ -166,7 +166,7 @@ function displayEditMode() {
     header.style.margin = '50px auto';
 
     const main = document.querySelector('main');
-    main.style.maxWidth= '1140px';
+    main.style.maxWidth = '1140px';
     main.style.margin = 'auto';
 
     let edit = document.createElement('p');
@@ -483,6 +483,7 @@ function updateModal() {
     const addImgButton = document.createElement('input');
     addImgButton.type = 'file';
     addImgButton.setAttribute('id', 'file');
+    addImgButton.setAttribute('required', 'required');
     addImgButton.style.width = '0';
     addImgButton.style.height = '0';
     addImgButton.style.overflow = 'hidden';
@@ -544,6 +545,7 @@ function updateModal() {
     labelCategory.style.marginBottom = '10px';
 
     const selectCategory = document.createElement('select');
+    selectCategory.setAttribute('required', 'required');
     selectCategory.style.height = '51px';
     selectCategory.style.border = 'none';
     selectCategory.style.boxShadow = '0px 4px 14px 0px rgba(0, 0, 0, 0.09)';
@@ -556,6 +558,9 @@ function updateModal() {
     containerFormInfo.appendChild(inputTitle);
     containerFormInfo.appendChild(labelCategory);
     containerFormInfo.appendChild(selectCategory);
+
+    const option = document.createElement('option');
+    option.style.display = 'none';
 
     const optionObject = document.createElement('option');
     optionObject.setAttribute('id', '1');
@@ -572,6 +577,7 @@ function updateModal() {
     optionHotel.setAttribute('name', 'Hotels & restaurants');
     optionHotel.innerText = 'Hotels & restaurants';
 
+    selectCategory.appendChild(option);
     selectCategory.appendChild(optionObject);
     selectCategory.appendChild(optionAppart);
     selectCategory.appendChild(optionHotel);
@@ -581,8 +587,23 @@ function updateModal() {
     validForm.type = 'submit';
     validForm.innerText = 'Valider';
     validForm.style.backgroundColor = '#A7A7A7';
+    validForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        sendData();
+    })
 
     formAddWork.appendChild(validForm);
+};
+
+function sendData() {
+    const formData = new FormData(formAddWork);
+    fetch('http://localhost:5678/api/works/', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
 };
 
 displayAddWorksModal();
