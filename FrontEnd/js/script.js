@@ -54,56 +54,25 @@ function displayFilter() {
                 return response.json();
             };
         })
-
         .then(function (data) {
             data.unshift({
                 id: 0,
                 name: 'Tous'
             });
-
             const portfolio = document.getElementById("portfolio");
             const gallery = document.getElementsByClassName("gallery").item(0);
-
             let divFiltres = document.createElement("div");
-            divFiltres.classList.add("filtres");
-            divFiltres.style.display = 'flex';
-            divFiltres.style.flexDirection = 'row';
-            divFiltres.style.justifyContent = 'center';
-            divFiltres.style.columnGap = '10px';
-            divFiltres.style.marginBottom = '50px';
-
+            divFiltres.classList.add("filters");
             portfolio.insertBefore(divFiltres, gallery);
-
             for (let categorie of data) {
                 let button = document.createElement("button");
+                button.classList.add("button-filter");
                 button.innerText = categorie.name;
                 button.value = categorie.id;
                 button.addEventListener('click', function (event) {
                     selectedCategoryId = parseInt(event.target.value); // mettre à jour l'identifiant de la catégorie sélectionnée
                     displayWorks(); // afficher les works filtrés
                 });
-
-                button.style.fontFamily = 'Syne';
-                button.style.fontSize = '16px';
-                button.style.fontWeight = '700';
-                button.style.lineHeight = '19px';
-                button.style.color = '#1D6154';
-                button.style.border = '1px solid #1D6154';
-                button.style.backgroundColor = '#FFFEF8';
-                button.style.borderRadius = '60px';
-                button.style.width = 'fit-content';
-                button.style.padding = '8px 20px';
-
-                button.addEventListener("mouseover", function(event){
-                    event.target.style.textDecoration = 'none';
-                    event.target.style.color = '#FFFFFF';
-                    event.target.style.backgroundColor = '#1D6154';
-                });
-                button.addEventListener("mouseout", function(event){
-                    event.target.style.color = '#1D6154';
-                    event.target.style.backgroundColor = '#FFFEF8';
-                });
-
                 divFiltres.appendChild(button);
             };
         })
@@ -149,15 +118,7 @@ function displayEditMode() {
     body.style.maxWidth = '100%';
 
     let banniere = document.createElement('div');
-    banniere.style.backgroundColor = '#000000';
-    banniere.style.width = '100%';
-    banniere.style.margin = '0';
-    banniere.style.height = '59px';
-    banniere.style.marginBottom = '39px';
-    banniere.style.display = 'flex';
-    banniere.style.justifyContent = 'center';
-    banniere.style.alignItems = 'center';
-    banniere.style.columnGap = '21px';
+    banniere.classList.add('ban-edit');
 
     body.prepend(banniere);
 
@@ -171,20 +132,10 @@ function displayEditMode() {
 
     let edit = document.createElement('p');
     edit.innerHTML = '<i class="fas fa-regular fa-pen-to-square fa-lg"></i> Mode édition';
-    edit.style.color = '#FFFFFF';
-    edit.style.fontFamily = 'Work Sans';
-    edit.style.fontSize = '14px';
 
     let publi = document.createElement('button');
     publi.setAttribute('id', 'publier');
     publi.innerText = 'publier les changements';
-    publi.style.color = '#000000';
-    publi.style.backgroundColor = '#FFFFFF';
-    publi.style.border = 'none';
-    publi.style.borderRadius = '60px';
-    publi.style.padding = '11px 23px';
-    publi.style.fontFamily = 'Work Sans';
-    publi.style.fontSize = '14px'
 
     banniere.append(edit);
     banniere.appendChild(publi);
@@ -226,11 +177,7 @@ function displayEditButtonPhoto() {
  */
 function displayEditButtonWorks() {
     let divTitle = document.createElement('div');
-    divTitle.setAttribute('id', 'titlework');
-    divTitle.style.display = 'flex';
-    divTitle.style.justifyContent = 'center';
-    divTitle.style.alignItems = 'center';
-    divTitle.style.columnGap = '31px';
+    divTitle.setAttribute('id', 'title-work');
 
     const portfolio = document.getElementById('portfolio');
     portfolio.prepend(divTitle);
@@ -239,9 +186,6 @@ function displayEditButtonWorks() {
     modifier.classList.add("js-modal");
     modifier.setAttribute("href", "#modal");
     modifier.innerHTML = '<i class="fas fa-regular fa-pen-to-square fa-lg"></i> modifier';
-    modifier.style.marginBottom = '2em';
-    modifier.style.textDecoration = 'none';
-    modifier.style.color = '#000000';
 
     const title = document.querySelector('#portfolio > h2');
 
@@ -261,9 +205,6 @@ function displayModal() {
 
     const modalNav = document.createElement('div');
     modalNav.classList.add('modal-nav');
-    modalNav.style.display = 'flex';
-    modalNav.style.justifyContent = 'right';
-    modalNav.style.margin = '32px 32px 0px 32px';
 
     const closeModalButton = document.createElement('button');
     closeModalButton.classList.add('js-close-modal');
@@ -314,33 +255,21 @@ function displayWorksModal() {
         })
     
         .then(function (data) {
+            console.log(data);
 
             for (let work of data) {
                 let newFigure = document.createElement("figure");
-                newFigure.style.width = '78px';
-                newFigure.style.height = '128px';
-                newFigure.style.position = 'relative';
+                newFigure.classList.add('modal-figure-works')
 
                 let newImg = document.createElement("img");
                 newImg.setAttribute("crossorigin", "anonymous");
                 newImg.setAttribute("src", work.imageUrl);
                 newImg.alt = work.title;
-                newImg.style.width = '100%';
-                newImg.style.objectFit = 'cover';
 
                 let deleteButton = document.createElement("button");
                 deleteButton.setAttribute("id", work.id);
                 deleteButton.classList.add('js-delete-button');
                 deleteButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-                deleteButton.style.position = 'absolute';
-                deleteButton.style.backgroundColor = '#000000';
-                deleteButton.style.padding = '4px';
-                deleteButton.style.border = 'none';
-                deleteButton.style.borderRadius = '2px';
-                deleteButton.style.marginLeft = '55px';
-                deleteButton.style.marginTop = '6px';
-                deleteButton.style.color = '#FFFFFF';
-                deleteButton.style.fontSize = '14px';
 
                 let newCaption = document.createElement("figcaption");
                 newCaption.innerText = 'éditer';
@@ -412,9 +341,6 @@ function updateModal() {
 
     const modalNav = document.createElement('div');
     modalNav.classList.add('modal-nav');
-    modalNav.style.display = 'flex';
-    modalNav.style.justifyContent = 'space-between';
-    modalNav.style.margin = '32px 32px 0px 32px';
 
     const closeModalButton = document.createElement('button');
     closeModalButton.classList.add('js-close-modal');
@@ -423,10 +349,6 @@ function updateModal() {
     const goBackButton = document.createElement('button');
     goBackButton.classList.add('js-go-back-button');
     goBackButton.innerHTML = '<i class="fa-solid fa-arrow-left"></i>';
-    goBackButton.style.border = 'none';
-    goBackButton.style.background = 'none';
-    goBackButton.style.fontSize = '12px';
-    goBackButton.style.cursor = 'pointer';
     goBackButton.addEventListener('click', function () {
         deleteModal();
         displayModal();
@@ -440,9 +362,7 @@ function updateModal() {
     titleModal.innerText = "Ajout photo";
 
     const formAddWork = document.createElement('form');
-    formAddWork.style.margin = '32px 100px 32px 100px';
-    formAddWork.style.display = 'flex';
-    formAddWork.style.flexDirection = 'column';
+    formAddWork.classList.add('form-add-works')
 
     modalWrapper.append(modalNav);
     modalWrapper.appendChild(titleModal);
@@ -450,43 +370,22 @@ function updateModal() {
 
     const containerFormImg = document.createElement('div');
     containerFormImg.classList.add('container-add-img');
-    containerFormImg.style.height = 'fit-content';
-    containerFormImg.style.backgroundColor = '#E8F1F6';
-    containerFormImg.style.display = 'flex';
-    containerFormImg.style.flexDirection = 'column';
-    containerFormImg.style.alignItems = 'center';
-    containerFormImg.style.padding = '28px';
-    containerFormImg.style.marginBottom = '30px';
+
     formAddWork.appendChild(containerFormImg);
 
     const imgPreview = document.createElement('img');
     imgPreview.src = 'assets/icons/icon-img.png'
-    imgPreview.style.width = 'auto';
-    imgPreview.style.maxHeight = '90px';
-    imgPreview.style.marginBottom = '21px';
     containerFormImg.appendChild(imgPreview);
 
     const labelAddImgButton = document.createElement('label');
     labelAddImgButton.setAttribute('for', 'file');
     labelAddImgButton.innerText = '+ Ajouter photo';
-    labelAddImgButton.style.padding = '10px 33px';
-    labelAddImgButton.style.fontSize = '14px';
-    labelAddImgButton.style.fontStyle = 'medium';
-    labelAddImgButton.style.lineHeight = '16px';
-    labelAddImgButton.style.color = '#306685';
-    labelAddImgButton.style.fontFamily = 'Work Sans';
-    labelAddImgButton.style.backgroundColor = '#CBD6DC';
-    labelAddImgButton.style.border = 'none';
-    labelAddImgButton.style.borderRadius = '50px';
-    labelAddImgButton.style.cursor = 'pointer';
 
     const addImgButton = document.createElement('input');
     addImgButton.type = 'file';
     addImgButton.setAttribute('id', 'file');
+    addImgButton.classList.add('verif-form');
     addImgButton.setAttribute('required', 'required');
-    addImgButton.style.width = '0';
-    addImgButton.style.height = '0';
-    addImgButton.style.overflow = 'hidden';
     addImgButton.addEventListener('change', (event) => {
         const file = event.target.files[0];
 
@@ -503,56 +402,35 @@ function updateModal() {
 
     const infoAddImg = document.createElement('p');
     infoAddImg.innerText = 'jpg, png : 4mo max';
-    infoAddImg.style.fontFamily = 'Work Sans';
-    infoAddImg.style.fontSize = '10px';
-    infoAddImg.style.color = '#444444';
-    infoAddImg.style.marginTop = '7px';
 
     containerFormImg.appendChild(labelAddImgButton);
     containerFormImg.appendChild(addImgButton);
     containerFormImg.appendChild(infoAddImg);
 
     const containerFormInfo = document.createElement('div');
-    containerFormInfo.style.borderBottom = 'solid 1px #B3B3B3';
-    containerFormInfo.style.display = 'flex';
-    containerFormInfo.style.flexDirection = 'column';
-    containerFormInfo.style.marginBottom = '32px';
+    containerFormInfo.classList.add('container-form-info');
     formAddWork.appendChild(containerFormInfo);
 
     const labelTitle = document.createElement('label');
     labelTitle.setAttribute('for', 'title');
     labelTitle.innerText = 'Titre';
-    labelTitle.style.fontFamily = 'Work Sans';
-    labelTitle.style.fontSize = '14px';
-    labelTitle.style.marginBottom = '10px';
 
     let inputTitle = document.createElement('input');
     inputTitle.setAttribute('type', 'text');
     inputTitle.setAttribute('name', 'title');
     inputTitle.setAttribute('id', 'title');
+    inputTitle.classList.add('verif-form');
     inputTitle.setAttribute('required', 'required');
-    inputTitle.style.border = 'none';
-    inputTitle.style.boxShadow = '0px 4px 14px 0px rgba(0, 0, 0, 0.09)';
-    inputTitle.style.marginBottom = '21px';
-    inputTitle.style.padding = '17px';
-    inputTitle.style.fontFamily = 'Work Sans';
 
     const labelCategory = document.createElement('label');
     labelCategory.setAttribute('for', 'category');
     labelCategory.innerText = 'Catégorie';
-    labelCategory.style.fontFamily = 'Work Sans';
-    labelCategory.style.fontSize = '14px';
-    labelCategory.style.marginBottom = '10px';
 
     const selectCategory = document.createElement('select');
+    selectCategory.setAttribute('id', 'categoryId');
+    selectCategory.classList.add('verif-form');
+    selectCategory.setAttribute('name', 'categoryId');
     selectCategory.setAttribute('required', 'required');
-    selectCategory.style.height = '51px';
-    selectCategory.style.border = 'none';
-    selectCategory.style.boxShadow = '0px 4px 14px 0px rgba(0, 0, 0, 0.09)';
-    selectCategory.style.backgroundColor = '#FFFFFF';
-    selectCategory.style.padding = '17px';
-    selectCategory.style.marginBottom = '47px';
-    selectCategory.style.fontFamily = 'Work Sans';
 
     containerFormInfo.appendChild(labelTitle);
     containerFormInfo.appendChild(inputTitle);
@@ -584,26 +462,58 @@ function updateModal() {
 
     const validForm = document.createElement('button');
     validForm.classList.add('js-add-works');
-    validForm.type = 'submit';
     validForm.innerText = 'Valider';
     validForm.style.backgroundColor = '#A7A7A7';
-    validForm.addEventListener('submit', function (event) {
+    validForm.addEventListener('click', function (event) {
         event.preventDefault();
         sendData();
-    })
+    });
+
+    const requiredElements = document.querySelectorAll('.verif-form[required]');
+
+    requiredElements.forEach(element => {
+        element.addEventListener('input', function () {
+            if (formAddWork.checkValidity()) {
+                validForm.style.backgroundColor = '#1D6154';
+            } else {
+                validForm.style.backgroundColor = '#A7A7A7'; 
+            }
+        });
+    });
 
     formAddWork.appendChild(validForm);
 };
 
 function sendData() {
-    const formData = new FormData(formAddWork);
+
+    const title = document.getElementById('title').value;
+const category = document.getElementById('categoryId').value;
+const file = document.getElementById('file').files[0];
+
+const formData = new FormData();
+formData.append('title', title);
+formData.append('category', category);
+formData.append('image', file);
+
+    console.log(formData);
+
+  // Envoi des données au serveur avec une requête HTTP POST
     fetch('http://localhost:5678/api/works/', {
         method: 'POST',
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+        },
         body: formData
     })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
+        .then(response => {
+            console.log(response);
+            if (response.ok) {
+                console.log('Données envoyées avec succès !');
+            } else {
+                console.error('Erreur lors de l\'envoi des données : ', response.status);
+            }
+        })
+        .catch(error => console.error('Erreur lors de l\'envoi des données : ', error));
 };
 
 displayAddWorksModal();
