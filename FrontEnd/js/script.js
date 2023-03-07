@@ -249,9 +249,18 @@ function displayModal() {
  * Affichage et suppression des works dans la modale
  */
 function displayWorksModal() {
+
+
     fetch("http://localhost:5678/api/works")
         .then(function (response) {
             if (response.ok) {
+                const modalGallery = document.getElementById('modal-gallery');
+                    while (modalGallery.firstChild) {
+        modalGallery.removeChild(modalGallery.firstChild);
+    };
+                console.log(modalGallery);
+                //deleteModal();
+                //displayModal();
                 return response.json();
             }
         })
@@ -262,7 +271,7 @@ function displayWorksModal() {
             for (let work of data) {
                 
                 let newFigure = document.createElement("figure");
-                newFigure.classList.add('modal-figure-works')
+                newFigure.classList.add('modal-figure-works');
 
                 let newImg = document.createElement("img");
                 newImg.setAttribute("crossorigin", "anonymous");
@@ -275,7 +284,10 @@ function displayWorksModal() {
                 deleteButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
                 deleteButton.addEventListener('click', function (event) {
                     console.log(event.target.id);
+                    alert('Suppression ' + event.target.id)
                     deleteWorksApi(event.target.id);
+                    displayWorksModal();
+                    displayWorks();
                 })
 
                 let newCaption = document.createElement("figcaption");
@@ -443,6 +455,7 @@ function updateModal() {
             }
         })
         .then(function (data) {
+            console.log(data);
             for (let category of data) {
                 const option = document.createElement('option');
                 option.setAttribute('id', category.id);
@@ -507,7 +520,8 @@ function sendData() {
             console.log(response);
             if (response.ok) {
                 console.log('Données envoyées avec succès !');
-                window.location.replace(`index.html`);
+                closeModal();
+                displayWorks();
             } else {
                 console.error('Erreur lors de l\'envoi des données : ', response.status);
             }
@@ -515,4 +529,38 @@ function sendData() {
         .catch(error => console.error('Erreur lors de l\'envoi des données : ', error));
 };
 
-displayAddWorksModal();
+//displayAddWorksModal();
+
+let modal = null;
+
+const openModal = function (e) {
+    if (e) {e.preventDefault();}
+  const target = document.querySelector(e.target.getAttribute('href'));
+  target.style.display = null;
+  target.removeAttribute('aria-hidden');
+  target.setAttribute('aria-modal', 'true');
+  modal = target;
+  modal.addEventListener('click', closeModal);
+  modal.querySelector('.js-close-modal').addEventListener('click', closeModal);
+  modal.querySelector('.js-stop-modal').addEventListener('click', stopPropagation);
+};
+
+const closeModal = function (e) {
+  if (modal === null) return;
+    if (e) { e.preventDefault(); }
+  modal.style.display = "none";
+  modal.setAttribute('aria-hidden', 'true');
+  modal.removeAttribute('aria-modal');
+  modal.removeEventListener('click', closeModal);
+  modal.querySelector('.js-close-modal').removeEventListener('click', closeModal);
+  modal.querySelector('.js-stop-modal').removeEventListener('click', stopPropagation);
+  modal = null;
+}
+
+const stopPropagation = function (e) {
+  e.stopPropagation()
+}
+
+document.querySelectorAll('.js-modal').forEach(a => {
+  a.addEventListener('click', openModal);
+});
