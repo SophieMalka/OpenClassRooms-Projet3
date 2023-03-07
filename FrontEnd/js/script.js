@@ -260,6 +260,7 @@ function displayWorksModal() {
             console.log(data);
 
             for (let work of data) {
+                
                 let newFigure = document.createElement("figure");
                 newFigure.classList.add('modal-figure-works')
 
@@ -294,14 +295,14 @@ function displayWorksModal() {
 
 /**
  * Envoie une requête HTTP DELETE à l'API pour supprimer les works correspondant à l'identifiant fourni
- * @param {Number} idWorks Identifiant des works à supprimer
+ * @param {Number} id Identifiant des works à supprimer
  */
-function deleteWorksApi(idWorks) {
-    fetch(`http://localhost:5678/api/works/${idWorks}`, {
+function deleteWorksApi(id) {
+    fetch(`http://localhost:5678/api/works/${id}`, {
         method: 'DELETE',
         headers: {
-            "Content-type": "application/Json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            'content-type': "application/Json",
+            'authorization': "Bearer " + localStorage.getItem("token"),
         },
     })
         .then((response) => {
