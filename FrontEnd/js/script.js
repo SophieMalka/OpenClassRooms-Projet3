@@ -508,6 +508,7 @@ function sendData() {
             console.log(response);
             if (response.ok) {
                 console.log('Données envoyées avec succès !');
+                window.location.replace(`index.html`);
             } else {
                 console.error('Erreur lors de l\'envoi des données : ', response.status);
             }
