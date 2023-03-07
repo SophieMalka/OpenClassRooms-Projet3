@@ -487,21 +487,25 @@ function updateModal() {
 function sendData() {
 
     const title = document.getElementById('title').value;
-const category = document.getElementById('categoryId').value;
-const file = document.getElementById('file').files[0];
+    const category = document.getElementById('categoryId').value;
+    const file = document.getElementById('file').files[0];
 
-const formData = new FormData();
+    const formData = new FormData();
+    formData.append('image', file);
 formData.append('title', title);
 formData.append('category', category);
-formData.append('image', file);
+
 
     console.log(formData);
+
 
   // Envoi des données au serveur avec une requête HTTP POST
     fetch('http://localhost:5678/api/works/', {
         method: 'POST',
+        credentials: 'same-origin',
         headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            authorization: "Bearer "+ localStorage.getItem("token"),
+            accept: 'application/json',
         },
         body: formData
     })
