@@ -59,6 +59,8 @@ function displayFilter() {
                 id: 0,
                 name: 'Tous'
             });
+            console.log(data);
+
             const portfolio = document.getElementById("portfolio");
             const gallery = document.getElementsByClassName("gallery").item(0);
             let divFiltres = document.createElement("div");
@@ -328,9 +330,7 @@ function displayAddWorksModal() {
  */
 function deleteModal() {
     const modalWrapper = document.querySelector('.modal-wrapper');
-    while (modalWrapper.firstChild) {
-        modalWrapper.removeChild(modalWrapper.firstChild);
-    };
+    modalWrapper.innerHTML = "";
 };
 
 /**
@@ -422,43 +422,39 @@ function updateModal() {
     inputTitle.classList.add('verif-form');
     inputTitle.setAttribute('required', 'required');
 
+    containerFormInfo.appendChild(labelTitle);
+    containerFormInfo.appendChild(inputTitle);
+
     const labelCategory = document.createElement('label');
     labelCategory.setAttribute('for', 'category');
     labelCategory.innerText = 'Catégorie';
 
     const selectCategory = document.createElement('select');
-    selectCategory.setAttribute('id', 'categoryId');
+    selectCategory.setAttribute('id', 'selectCategory');
     selectCategory.classList.add('verif-form');
-    selectCategory.setAttribute('name', 'categoryId');
     selectCategory.setAttribute('required', 'required');
 
-    containerFormInfo.appendChild(labelTitle);
-    containerFormInfo.appendChild(inputTitle);
     containerFormInfo.appendChild(labelCategory);
     containerFormInfo.appendChild(selectCategory);
 
-    const option = document.createElement('option');
-    option.style.display = 'none';
+    fetch(urlCategories)
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            }
+        })
+        .then(function (data) {
+            for (let category of data) {
+                const option = document.createElement('option');
+                option.setAttribute('id', category.id);
+                option.setAttribute('name', category.name);
+                option.innerText = category.name;
 
-    const optionObject = document.createElement('option');
-    optionObject.setAttribute('id', '1');
-    optionObject.setAttribute('name', 'Objets');
-    optionObject.innerText = 'Objets';
+                const selectCategory = document.getElementById('selectCategory');
+                selectCategory.append(option);
 
-    const optionAppart = document.createElement('option');
-    optionAppart.setAttribute('id', '2');
-    optionAppart.setAttribute('name', 'Appartements');
-    optionAppart.innerText = 'Appartements';
-
-    const optionHotel = document.createElement('option');
-    optionHotel.setAttribute('id', '3');
-    optionHotel.setAttribute('name', 'Hotels & restaurants');
-    optionHotel.innerText = 'Hotels & restaurants';
-
-    selectCategory.appendChild(option);
-    selectCategory.appendChild(optionObject);
-    selectCategory.appendChild(optionAppart);
-    selectCategory.appendChild(optionHotel);
+            }
+        });
 
     const validForm = document.createElement('button');
     validForm.classList.add('js-add-works');
@@ -487,25 +483,24 @@ function updateModal() {
 function sendData() {
 
     const title = document.getElementById('title').value;
-    const category = document.getElementById('categoryId').value;
+    const category = document.querySelector('option').id;
     const file = document.getElementById('file').files[0];
+
+    console.log(category);
 
     const formData = new FormData();
     formData.append('image', file);
-formData.append('title', title);
-formData.append('category', category);
+    formData.append('title', title);
+    formData.append('category', category);
 
-
-    console.log(formData);
-
+    const token = localStorage.getItem('token');
 
   // Envoi des données au serveur avec une requête HTTP POST
     fetch('http://localhost:5678/api/works/', {
         method: 'POST',
-        credentials: 'same-origin',
         headers: {
-            authorization: "Bearer "+ localStorage.getItem("token"),
-            accept: 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
         },
         body: formData
     })
