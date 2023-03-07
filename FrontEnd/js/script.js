@@ -270,9 +270,13 @@ function displayWorksModal() {
                 newImg.alt = work.title;
 
                 let deleteButton = document.createElement("button");
-                deleteButton.setAttribute("id", work.id);
+                deleteButton.setAttribute("id", `${work.id}`);
                 deleteButton.classList.add('js-delete-button');
                 deleteButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+                deleteButton.addEventListener('click', function (event) {
+                    console.log(event.target.id);
+                    deleteWorksApi(event.target.id);
+                })
 
                 let newCaption = document.createElement("figcaption");
                 newCaption.innerText = 'éditer';
@@ -283,12 +287,6 @@ function displayWorksModal() {
 
                 const modalGallery = document.getElementById('modal-gallery');
                 modalGallery.appendChild(newFigure);
-
-                deleteButton.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    const idWorks = event.target.id;
-                    deleteWorksApi(idWorks)
-                })
             };
         })
 };
@@ -307,7 +305,7 @@ function deleteWorksApi(id) {
     })
         .then((response) => {
             if (response.status === 201) {
-                displayWorks();
+                window.location.replace(`index.html`);
             };
         });
 };
