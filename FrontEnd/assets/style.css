@@ -136,6 +136,7 @@ nav a {
 	flex: 1
 }
 #introduction h2 {
+	margin-top: 0.3em;
 	margin-bottom: 1em;
 }
 
@@ -234,7 +235,7 @@ footer nav ul {
 	color: #3D3D3D;
 }
 
-.filters {
+#container-filters {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -263,6 +264,40 @@ footer nav ul {
 	background-color: #1D6154;
 }
 
+.edit_mode {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	color: white;
+	background-color: black;
+	width: 100%;
+	padding: 0.3rem 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.edit_mode > * {
+	color: white;
+	background-color: black;
+}
+
+.edit_mode_btn {
+	background-color: white;
+	color: black;
+	padding: 0.7rem;
+	border-radius: 60px;
+	border: none;
+}
+
+.edit_btn {
+	border: none;
+	padding: 0 0 1.5rem;
+	color: black;
+	cursor: pointer;
+}
+
 .ban-edit {
 	background-color: #000000;
 	width: 100%;
@@ -273,6 +308,27 @@ footer nav ul {
 	justify-content: center;
 	align-items: center;
 	column-gap: 21px;
+}
+
+#introduction figure .edit-link {
+	text-decoration: none;
+	color: #000000;
+	position: absolute;
+	margin-top: 16px;
+	margin-left: 56px;
+}
+
+#introduction .edit-link {
+	text-decoration: none;
+	color: #000000;
+}
+
+#portfolio .edit-link {
+	text-decoration: none;
+	color: #000000;
+	float: right;
+	margin-top: -51px;
+	margin-right: 33%;
 }
 
 #publier {
@@ -310,7 +366,12 @@ footer nav ul {
 	background: rgba(0, 0, 0, 0.8);
 }
 
-.modal-wrapper {
+#modal-gallery {
+	margin: 32px 100px 60px 100px;
+}
+
+.modal-wrapper-delete,
+.modal-wrapper-add {
 	overflow: auto;
 	width: 630px;
 	max-width: calc(100vw - 100px);
@@ -318,31 +379,29 @@ footer nav ul {
 	background-color: #FFFFFF;
 	border-radius: 10px;
 	display: flex;
+	align-content: center;
 	flex-direction: column;
+	padding-bottom: 30px;
 }
 
-.modal-content {
+.modal-wrapper-delete .modal-nav {
 	display: flex;
-	flex-direction: column;
-	padding: 32px 100px 60px 100px;
+	justify-content: flex-end;
+	margin: 32px 32px 0px 32px;
 }
 
-.modal-nav {
+.modal-wrapper-add .modal-nav {
 	display: flex;
 	justify-content: space-between;
 	margin: 32px 32px 0px 32px;
 }
 
-.js-go-back-button {
-	border: none;
-	background: none;
+.go-back-button {
 	font-size: 12px;
 	cursor: pointer;
 }
 
-.js-close-modal {
-	border: none;
-	background: none;
+.close-modal-button {
 	font-size: 12px;
 	text-align: right;
 	cursor: pointer;
@@ -370,7 +429,7 @@ footer nav ul {
 	object-fit: cover;
 }
 
-.js-delete-button {
+.delete-work {
 	position: absolute;
 	background-color: #000000;
 	padding: 4px;
@@ -382,6 +441,7 @@ footer nav ul {
 	font-size: 14px;
 }
 
+.link-modal-add,
 .js-add-works {
 	font-family: 'Syne';
 	font-size: 16px;
