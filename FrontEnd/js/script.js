@@ -103,6 +103,7 @@ function displayAdminMode() {
         // Affichage du bouton logout
         const log = document.querySelector('nav > ul > li > a');
         log.setAttribute('id', 'logout');
+        log.href = "index.html";
         log.innerText = "logout";
         // Affichage de la bannière noir
         const bannerTemplate = `<div class="edit_mode"><i class="fas fa-regular fa-pen-to-square fa-lg"></i><p>Mode édition</p><button class="edit_mode_btn">publier les changements</button></div>`;
@@ -125,14 +126,6 @@ function displayAdminMode() {
         // Désactivation de la fonction de filtrage
 
     };
-};
-
-/**
- * Déconnexion du mode admin
- */
-function logout() {
-    localStorage.removeItem('token');
-    window.location.replace('index.html');
 };
 
 /**
@@ -467,7 +460,7 @@ document.addEventListener('click', function (event) {
  */
 document.addEventListener('click', function (event) {
     if (event.target.matches('#logout')) {
-        logout();
+        localStorage.removeItem('token');
     };
 });
 
