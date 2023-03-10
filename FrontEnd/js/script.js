@@ -197,8 +197,6 @@ function displayModalDeleteWorks() {
  * Affichage des works dans la modal en fonction des données de l'API
  */
 function displayWorksModal() {
-    
-
     // Récupération des données de l'API
     fetch(urlWorks)
         .then(function (response) {
@@ -320,7 +318,7 @@ function displayFormAddWork() {
     addImgButton.type = 'file';
     addImgButton.setAttribute('id', 'file');
     addImgButton.classList.add('input-image', 'verif-form');
-    addImgButton.setAttribute('required', 'required');
+    addImgButton.required = true;
     // Création de la ligne d'information file
     const infoAddImg = document.createElement('p');
     infoAddImg.innerText = 'jpg, png : 4mo max';
@@ -337,7 +335,7 @@ function displayFormAddWork() {
     inputTitle.setAttribute('name', 'title');
     inputTitle.setAttribute('id', 'title');
     inputTitle.classList.add('verif-form');
-    inputTitle.setAttribute('required', 'required');
+    inputTitle.required = true;
     // Création du label catégorie
     const labelCategory = document.createElement('label');
     labelCategory.setAttribute('for', 'category');
@@ -346,7 +344,7 @@ function displayFormAddWork() {
     const selectCategory = document.createElement('select');
     selectCategory.setAttribute('id', 'selectCategory');
     selectCategory.classList.add('verif-form');
-    selectCategory.setAttribute('required', 'required');
+    selectCategory.required = true;
     // Récupération des options catégorie
     setOptionsSelectForm();
     // Création du bouton valider
@@ -374,6 +372,10 @@ function setOptionsSelectForm() {
             }
         })
         .then(function (data) {
+            data.unshift({
+                id: 0,
+                name: ''
+            });
             for (let category of data) {
                 const option = document.createElement('option');
                 option.classList.add('cat-option');
@@ -489,7 +491,6 @@ document.addEventListener('click', function (event) {
  */
 document.addEventListener('click', function (event) {
     if (event.target.matches('.delete-work')) {
-        console.log(event.target.id);
         deleteWorksData(event.target.id);
         alert('Supression du work id=' + event.target.id);
         displayWorksModal();
@@ -538,6 +539,9 @@ document.addEventListener('change', function (event) {
     };
 }); 
 
+/**
+ * EVENT : Envoi des données du formulaire au clic sur le bouton valider
+ */
 document.addEventListener('click', function (event) {
     if (event.target.matches('.js-add-works')) {
         sendData();
