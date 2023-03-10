@@ -197,15 +197,17 @@ function displayModalDeleteWorks() {
  * Affichage des works dans la modal en fonction des données de l'API
  */
 function displayWorksModal() {
-    // Suppression de la galerie avant l'ajout des works de l'API
-    const gallery = document.getElementById('modal-gallery');
-    while (gallery.firstChild) {
-        gallery.removeChild(gallery.firstChild)
-    };
+    
+
     // Récupération des données de l'API
     fetch(urlWorks)
         .then(function (response) {
             if (response.ok) {
+                // Suppression de la galerie avant l'ajout des works de l'API
+                const gallery = document.getElementById('modal-gallery');
+                while (gallery.firstChild) {
+                    gallery.removeChild(gallery.firstChild)
+                };
                 return response.json();
             };
         })
@@ -249,7 +251,8 @@ function deleteWorksData(id) {
     })
         .then((response) => {
             if (response.status === 201) {
-                window.location.replace(`index.html`);
+                displayWorksModal();
+                displayWorks();
             };
         });
 };
@@ -373,6 +376,7 @@ function setOptionsSelectForm() {
         .then(function (data) {
             for (let category of data) {
                 const option = document.createElement('option');
+                option.classList.add('cat-option');
                 option.setAttribute('id', category.id);
                 option.setAttribute('name', category.name);
                 option.innerText = category.name;
@@ -406,7 +410,9 @@ function verifForm() {
 function sendData() {
     // Récupération des valeurs du formulaire
     const title = document.getElementById('title').value;
-    const category = document.querySelector('option').id;
+    const selectCategory = document.getElementById('selectCategory');
+    const choice = selectCategory.selectedIndex;
+    const category = selectCategory.options[choice].id;
     const file = document.getElementById('file').files[0];
     // Création de l'objet formData
     const formData = new FormData();
@@ -414,10 +420,9 @@ function sendData() {
     formData.append('title', title);
     formData.append('category', category);
 
-    console.log(category);
     // Récupération du token 
     const token = localStorage.getItem('token');
-    // Envoi des données au serveur avec une requête HTTP POST
+    //Envoi des données au serveur avec une requête HTTP POST
     fetch(urlWorks, {
         method: 'POST',
         headers: {
@@ -430,6 +435,8 @@ function sendData() {
             console.log(response);
             if (response.ok) {
                 console.log('Données envoyées avec succès !');
+                goBackModal();
+                displayWorksModal();
                 displayWorks();
             } else {
                 console.error('Erreur lors de l\'envoi des données : ', response.status);
@@ -534,8 +541,7 @@ document.addEventListener('change', function (event) {
 document.addEventListener('click', function (event) {
     if (event.target.matches('.js-add-works')) {
         sendData();
-        goBackModal();
-        displayWorksModal();
+        displayWorks();
     };
 });
 
@@ -543,3 +549,4 @@ document.addEventListener('click', function (event) {
 displayWorks();
 displayFilters();
 displayAdminMode();
+
