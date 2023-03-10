@@ -435,10 +435,22 @@ footer nav ul {
 	padding: 4px;
 	border: none;
 	border-radius: 2px;
-	margin-left: 52px;
-	margin-top: 6px;
+	left: 54px;
+	top: 6px;
 	color: #FFFFFF;
-	font-size: 14px;
+	font-size: 11px;
+}
+
+.fa-up-down-left-right {
+	position: absolute;
+	background-color: #000000;
+	padding: 4px;
+	border: none;
+	border-radius: 2px;
+	top: 6px;
+	left: 30px;
+	color: #FFFFFF;
+	font-size: 11px;
 }
 
 .link-modal-add,

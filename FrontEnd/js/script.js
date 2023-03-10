@@ -220,8 +220,6 @@ function displayWorksModal() {
                 image.setAttribute('crossorigin', 'anonymous');
                 image.setAttribute('src', work.imageUrl);
                 image.alt = work.title;
-                // Création du bouton "déplacer" sur le premier work
- 
                 // Création du bouton "poubelle" pour chaque work
                 let deleteButton = document.createElement('i');
                 deleteButton.setAttribute('id', work.id);
@@ -232,7 +230,14 @@ function displayWorksModal() {
                 // Rattachement des éléments au DOM
                 gallery.append(figure);
                 figure.append(deleteButton, image, figCaption);
+
             };
+            // Création du bouton "déplacer" sur le premier work
+            const firstFigure = document.getElementsByClassName('modal-figure-works').item(0);
+            console.log(firstFigure);
+            const moveButton = document.createElement('i');
+            moveButton.classList.add('fa-solid', 'fa-up-down-left-right');
+            firstFigure.prepend(moveButton);
         })
 };
 
