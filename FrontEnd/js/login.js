@@ -2,8 +2,8 @@
 const form = document.querySelector("form");
 
 /**
- * 
- * @param {string} event connexion 
+ * Connexion
+ * @param {string} event clic sur le bouton de connexion 
  */
 async function onSubmit(event) {
     event.preventDefault();
