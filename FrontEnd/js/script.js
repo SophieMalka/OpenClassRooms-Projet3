@@ -232,7 +232,6 @@ function displayWorksModal() {
             };
             // Création du bouton "déplacer" sur le premier work
             const firstFigure = document.getElementsByClassName('modal-figure-works').item(0);
-            console.log(firstFigure);
             const moveButton = document.createElement('i');
             moveButton.classList.add('fa-solid', 'fa-up-down-left-right');
             firstFigure.prepend(moveButton);
