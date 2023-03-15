@@ -52,37 +52,42 @@ function displayWorks() {
  * Affichage des boutons de filtre par catégorie grâce aux données de l'API
  */
 function displayFilters() {
-    // Récupération des données de l'API
-    fetch(urlCategories)
-        .then(function (response) {
-            if (response.ok) {
-                return response.json();
-            };
-        })
-        .then(function (data) {
-            // Ajout de la catégorie "Tous" sur les données de l'API
-            data.unshift({
-                id: 0,
-                name: 'Tous'
-            });
-            // Récupération des éléments du DOM pour le rattachement des boutons de filtre
-            const portfolio = document.getElementById('portfolio');
-            const gallery = document.getElementsByClassName('gallery').item(0);
-            // Création du conteneur des boutons de filtres
-            const divFilters = document.createElement('div');
-            divFilters.setAttribute('id', 'container-filters');
-            // Création des boutons de filtre en fonctions des données de l'API
-            for (let category of data) {
-                const button = document.createElement('button');
-                button.classList.add('button-filter');
-                button.innerText = category.name;
-                button.value = category.id;
-                // Rattachement des boutons de filtre au DOM
-                divFilters.appendChild(button);
-            }
-            // Rattachement du conteneur des boutons de filtres au DOM
-            portfolio.insertBefore(divFilters, gallery);
-        })
+    // Nouvelle promesse : attendre que cette fonction soit exécutée en totalité avant d'éxecuter la suivante
+    return new Promise(resolve => {
+        // Récupération des données de l'API
+        fetch(urlCategories)
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                };
+            })
+            .then(function (data) {
+                // Ajout de la catégorie "Tous" sur les données de l'API
+                data.unshift({
+                    id: 0,
+                    name: 'Tous'
+                });
+                // Récupération des éléments du DOM pour le rattachement des boutons de filtre
+                const portfolio = document.getElementById('portfolio');
+                const gallery = document.getElementsByClassName('gallery').item(0);
+                // Création du conteneur des boutons de filtres
+                const divFilters = document.createElement('div');
+                divFilters.setAttribute('id', 'container-filters');
+                // Création des boutons de filtre en fonctions des données de l'API
+                for (let category of data) {
+                    const button = document.createElement('button');
+                    button.classList.add('button-filter');
+                    button.innerText = category.name;
+                    button.value = category.id;
+                    // Rattachement des boutons de filtre au DOM
+                    divFilters.appendChild(button);
+                }
+                // Rattachement du conteneur des boutons de filtres au DOM
+                portfolio.insertBefore(divFilters, gallery);
+                // Résolution de la promesse
+                resolve();
+            })
+    });
 };
 
 /**
@@ -124,7 +129,8 @@ function displayAdminMode() {
         editButtonGallery.href = '#modal';
         editButtonGallery.classList.add('open-modal');
         // Désactivation de la fonction de filtrage
-
+        const divFilters = document.getElementById('container-filters');
+        divFilters.style.display = 'none';
     };
 };
 
@@ -223,7 +229,6 @@ function displayWorksModal() {
                 // Rattachement des éléments au DOM
                 gallery.append(figure);
                 figure.append(deleteButton, image, figCaption);
-
             };
             // Création du bouton "déplacer" sur le premier work
             const firstFigure = document.getElementsByClassName('modal-figure-works').item(0);
@@ -547,8 +552,14 @@ document.addEventListener('click', function (event) {
     };
 });
 
-// Déclanchement des fonctions au chargement de la page
-displayWorks();
-displayFilters();
-displayAdminMode();
+/**
+ * Déclanchement des fonctions au chargement de la page
+ */
+async function init() {
+    displayWorks();
+    await displayFilters();
+    displayAdminMode();
+};
+
+init();
 
