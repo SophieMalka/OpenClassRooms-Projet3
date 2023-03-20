@@ -354,6 +354,7 @@ function displayFormAddWork() {
     validForm.classList.add('js-add-works');
     validForm.innerText = 'Valider';
     validForm.style.backgroundColor = '#A7A7A7';
+    //validForm.disabled = true;
     // Rattachement des éléments ci-dessus au DOM
     modalWrapper.appendChild(formAddWork);
     formAddWork.append(containerFormImg, containerFormInfo, validForm);
@@ -401,8 +402,9 @@ function verifForm() {
         element.addEventListener('input', function () {
             if (formAddWork.checkValidity()) {
                 validForm.style.backgroundColor = '#1D6154';
+                //validForm.disabled = false;
             } else {
-                validForm.style.backgroundColor = '#A7A7A7'; 
+                validForm.style.backgroundColor = '#A7A7A7';
             }
         });
     });
@@ -546,8 +548,11 @@ document.addEventListener('change', function (event) {
  */
 document.addEventListener('click', function (event) {
     if (event.target.matches('.js-add-works')) {
-        sendData();
-        displayWorks();
+        const formAddWork = document.querySelector('.form-add-works');
+        if (formAddWork.checkValidity()) {
+            sendData();
+            displayWorks();
+        }
     };
 });
 
