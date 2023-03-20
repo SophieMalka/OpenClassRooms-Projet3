@@ -548,8 +548,8 @@ document.addEventListener('change', function (event) {
  */
 document.addEventListener('click', function (event) {
     if (event.target.matches('.js-add-works')) {
-        const formAddWork = document.querySelector('.form-add-works');
-        if (formAddWork.checkValidity()) {
+        const formAddWorks = document.querySelector('.form-add-works');
+        if (formAddWorks.checkValidity()) {
             sendData();
             displayWorks();
         }
